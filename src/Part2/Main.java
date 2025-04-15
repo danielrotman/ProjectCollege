@@ -30,7 +30,7 @@ public class Main {
             switch (userOption){
                 case 0->System.out.println("Done... Bye");
                 case 1->addLecturer(c1);
-                case 2->option2();
+                case 2->addCommission(c1);
                 case 3-> option3();
                 case 4-> option4();
                 case 5-> option5();
@@ -38,7 +38,7 @@ public class Main {
                 case 7-> option7();
                 case 8-> option8();
                 case 9-> option9();
-                case 10-> option10();
+//                case 10-> option10();
                 default -> System.out.println("Invalid option choose again!");
             }
         }
@@ -55,7 +55,32 @@ public class Main {
         return s.nextInt();
     }
 
-    private static void option10() {
+
+    private static void addLecturer(College theCollege) {
+        String lectId,lectName,degreeName;
+        int salary;
+        Lecturer lecturer=createLecturer();
+        if(theCollege.addLecturer(lecturer)){
+            System.out.println("added successfully");
+        }
+        else{
+            System.out.println("failed adding");
+        }
+    }
+
+    private static void addCommission(College theCollege) {
+        String commissionName;
+        s.nextLine();
+        System.out.println("Enter Commission name: ");
+        commissionName=s.nextLine();
+        Lecturer headOfcommision=createLecturer();
+        Commission commission=new Commission(commissionName,headOfcommision);
+        if(theCollege.addCommision(commission)){
+            System.out.println("commission added successfully");
+        }
+        else{
+            System.out.println("failed adding commission");
+        }
     }
 
     private static void option9() {
@@ -82,7 +107,7 @@ public class Main {
     private static void option2() {
     }
 
-    private static void addLecturer(College theCollege) {
+    private static Lecturer createLecturer(){
         String lectId,lectName,degreeName;
         int salary;
         System.out.println("Enter lecturer degree: Bachelor/Master/Phd/Professor");
@@ -97,12 +122,8 @@ public class Main {
         System.out.println("Enter lecturer id");
         lectId=s.nextLine();
         Lecturer lect1=new Lecturer(lectName,lectId,degreeName,salary,degree);
-        if(theCollege.addLecturer(lect1)){
-            System.out.println("added successfully");
-        }
-        else{
-            System.out.println("failed adding");
-        }
+        return lect1;
     }
+
 
 }

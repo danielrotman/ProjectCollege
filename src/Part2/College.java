@@ -37,4 +37,25 @@ public class College {
         }
         return true;
     }
+
+    public boolean addCommision(Commission commission){
+        if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor&&commission.getHeadOfCommission().getDegree()!=Lecturer.eDegree.Master) {
+            return false;
+        }
+        if(numOfCommissions==0){
+            allCommissions=new Commission[2];
+            allCommissions[numOfCommissions++]=commission;
+        }
+        else{
+            for(int i=0;i<numOfCommissions;i++){
+                if(allCommissions[i].getCommissionName().equals(commission.getCommissionName())){
+                    return false;
+                }
+                else{
+                    allCommissions[numOfCommissions++]=commission;
+                }
+            }
+        }
+        return true;
+    }
 }
