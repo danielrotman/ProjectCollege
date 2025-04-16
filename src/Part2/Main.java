@@ -32,8 +32,8 @@ public class Main {
                 case 1->addLecturer(c1);
                 case 2->addCommission(c1);
                 case 3-> addMemberToCommission(c1);
-                case 4-> option4();
-                case 5-> option5();
+                case 4-> updateHeadOfCommission(c1);
+                case 5-> removeMemberFromCommission(c1);
                 case 6-> option6();
                 case 7-> ShowLecturersAvgSalary(c1);
                 case 8-> option8();
@@ -101,14 +101,36 @@ public class Main {
     private static void option6() {
     }
 
-    private static void option5() {
+    private static void removeMemberFromCommission(College theCollege) {
+        String commissionName,lectId;
+        s.nextLine();
+        System.out.println("Enter Commission name: ");
+        commissionName=s.nextLine();
+        System.out.println("Enter lecturer id");
+        lectId=s.nextLine();
+        if(theCollege.removeMemberFromCommission(commissionName,lectId)){
+            System.out.println("Member removed successfully");
+        }
+        else {
+            System.out.println("Removing member failed");
+        }
     }
 
-    private static void option4() {
+    private static void updateHeadOfCommission(College theCollege) {
+        String commissionName,lectId;
+        s.nextLine();
+        System.out.println("Enter Commission name: ");
+        commissionName=s.nextLine();
+        System.out.println("Enter lecturer id");
+        lectId=s.nextLine();
+        if(theCollege.isPossibleToChangeHeadOfCommission(commissionName,lectId)){
+            System.out.println("Head of commission changed");
+        }
+        else{
+            System.out.println("Update head of commission failed");
+        }
     }
 
-    private static void option3() {
-    }
 
     private static void addMemberToCommission(College theCollege) {
         String commissionName,lectId;

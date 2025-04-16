@@ -42,7 +42,7 @@ public class College {
     }
 
     public boolean addCommision(Commission commission){
-        if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor&&commission.getHeadOfCommission().getDegree()!=Lecturer.eDegree.Master) {
+        if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || commission.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master) {
             return false;
         }
             for(int i=0;i<numOfCommissions;i++) {
@@ -82,7 +82,31 @@ public class College {
         avg=sum/numOfLectrures;
         return avg;
     }
-
+    public boolean removeMemberFromCommission(String commissionNameToCompare, String id){
+        boolean isCommExist=false;
+        boolean isLectExist=false;
+        Lecturer l1 = null;
+        Commission comm1 = null;
+        for(int i=0;i<numOfLectrures;i++){
+            if(allLectrures[i].getId().equals(id)){
+                isLectExist=true;
+                l1=allLectrures[i];
+            }
+        }
+        for(int j=0;j<numOfCommissions;j++){
+            if(allCommissions[j].getCommissionName().equals(commissionNameToCompare)){
+                isCommExist=true;
+                comm1=allCommissions[j];
+            }
+        }
+        if(isCommExist&&isLectExist){
+            comm1.removeLectFromCommission(l1);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     public boolean addMemberToCommissionTeam(String commissionNameToCompare, String id){
         boolean isCommExist=false;
         boolean isLectExist=false;
@@ -108,5 +132,35 @@ public class College {
             return false;
         }
 
+
+    }
+    public boolean isPossibleToChangeHeadOfCommission(String CommissionName,String id){
+        boolean isCommExist=false;
+        boolean isLectExist=false;
+        boolean isLectQualified=true;
+        Lecturer l1 = null;
+        Commission comm1 = null;
+        for(int i=0;i<numOfLectrures;i++){
+            if(allLectrures[i].getId().equals(id)){
+                isLectExist=true;
+                l1=allLectrures[i];
+            }
+        }
+        for(int j=0;j<numOfCommissions;j++){
+            if(allCommissions[j].getCommissionName().equals(CommissionName)){
+                isCommExist=true;
+                comm1=allCommissions[j];
+            }
+        }
+        if(comm1.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || comm1.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master){
+            isLectQualified=false;
+        }
+        if(isCommExist&&isLectExist&&isLectQualified){
+            comm1.setHeadOfCommission(l1);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

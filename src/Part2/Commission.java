@@ -41,7 +41,15 @@ public class Commission {
     }
         commissionTeam[numOfCommissionMembers++]=l1;
     }
-
+    public void removeLectFromCommission(Lecturer l1){
+        if(numOfCommissionMembers==0){
+            commissionTeam=new Lecturer[2];
+        }
+        else if (numOfCommissionMembers == commissionTeam.length){
+            commissionTeam = Arrays.copyOf(commissionTeam, commissionTeam.length * 2);
+        }
+        commissionTeam[numOfCommissionMembers--]=null;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
