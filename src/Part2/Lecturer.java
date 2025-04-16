@@ -17,7 +17,9 @@ public class Lecturer {
         setSalary(salary);
         setDegree(degree);
     }
-
+    public Lecturer(Lecturer l2){
+        this(l2.name,l2.id, l2.degreeName, l2.salary, l2.degree);
+    }
     public String getName() {
         return name;
     }
@@ -64,6 +66,10 @@ public class Lecturer {
 
     public Commission[] getLectCommissions() {
         return lectCommissions;
+    }
+    @Override
+    public String toString() {
+        return "Lecturer{name='" + name + "', id='" + id + "', degree=" + degree + ", salary=" + salary + "}";
     }
 
 }

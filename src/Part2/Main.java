@@ -31,19 +31,23 @@ public class Main {
                 case 0->System.out.println("Done... Bye");
                 case 1->addLecturer(c1);
                 case 2->addCommission(c1);
-                case 3-> option3();
+                case 3-> addMemberToCommission(c1);
                 case 4-> option4();
                 case 5-> option5();
                 case 6-> option6();
-                case 7-> option7();
+                case 7-> ShowLecturersAvgSalary(c1);
                 case 8-> option8();
-                case 9-> option9();
-//                case 10-> option10();
+                case 9-> ShowAllLecturersDetails(c1);
+                case 10-> ShowCommissionsDetails(c1);
                 default -> System.out.println("Invalid option choose again!");
             }
         }
         while (userOption!=0);
         s.close();
+    }
+
+    private static void ShowCommissionsDetails(College c1) {
+    System.out.println(c1.toString());
     }
 
     private static int Showmenu() {
@@ -83,13 +87,15 @@ public class Main {
         }
     }
 
-    private static void option9() {
+    private static void ShowAllLecturersDetails(College theCollege) {
+        System.out.println(theCollege.getAllLecturersDetails());
     }
 
     private static void option8() {
     }
 
-    private static void option7() {
+    private static void ShowLecturersAvgSalary(College theCollege) {
+        System.out.println("The average salary in the college is "+theCollege.getLecturersAvgSalary());
     }
 
     private static void option6() {
@@ -104,7 +110,19 @@ public class Main {
     private static void option3() {
     }
 
-    private static void option2() {
+    private static void addMemberToCommission(College theCollege) {
+        String commissionName,lectId;
+        s.nextLine();
+        System.out.println("Enter Commission name: ");
+        commissionName=s.nextLine();
+        System.out.println("Enter lecturer id");
+        lectId=s.nextLine();
+        if(theCollege.addMemberToCommissionTeam(commissionName,lectId)){
+            System.out.println("Lecturer added to commission team");
+        }
+        else{
+            System.out.println("Lecturer or commission does not exist");
+        }
     }
 
     private static Lecturer createLecturer(){

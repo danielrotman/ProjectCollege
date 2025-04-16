@@ -1,5 +1,7 @@
 package Part2;
 
+import java.util.Arrays;
+
 public class College {
     private Lecturer[] allLectrures;
     private int numOfLectrures;
@@ -25,15 +27,16 @@ public class College {
             allLectrures=new Lecturer[2];
             allLectrures[numOfLectrures++]=l1;
         }
-        else{
-            for(int i=0;i<numOfLectrures;i++){
-                if(allLectrures[i].getId().equals(l1.getId())){
+        else {
+            for (int i = 0; i < numOfLectrures; i++) {
+                if (allLectrures[i].getId().equals(l1.getId())) {
                     return false;
                 }
-                else{
-                    allLectrures[numOfLectrures++]=l1;
-                }
             }
+            if (numOfLectrures == allLectrures.length) {
+                allLectrures = Arrays.copyOf(allLectrures, allLectrures.length * 2);
+            }
+            allLectrures[numOfLectrures++] = l1;
         }
         return true;
     }
@@ -42,20 +45,68 @@ public class College {
         if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor&&commission.getHeadOfCommission().getDegree()!=Lecturer.eDegree.Master) {
             return false;
         }
-        if(numOfCommissions==0){
-            allCommissions=new Commission[2];
-            allCommissions[numOfCommissions++]=commission;
-        }
-        else{
-            for(int i=0;i<numOfCommissions;i++){
-                if(allCommissions[i].getCommissionName().equals(commission.getCommissionName())){
+            for(int i=0;i<numOfCommissions;i++) {
+                if (allCommissions[i].getCommissionName().equals(commission.getCommissionName())) {
                     return false;
                 }
-                else{
-                    allCommissions[numOfCommissions++]=commission;
+            }
+                if(allCommissions==null || numOfCommissions==allCommissions.length){
+                    allCommissions=(allCommissions==null)?new Commission[2]:Arrays.copyOf(allCommissions,allCommissions.length*2);
                 }
+                allCommissions[numOfCommissions++]=commission;
+                return true;
+            }
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb= new StringBuilder("College "+collegeName+" has"+numOfCommissions+" ");
+        for(int i=0;i<numOfCommissions;i++){
+           sb.append(allCommissions[i].toString()).append("\n");
+        }
+        return sb.toString();
+    }
+    public String getAllLecturersDetails() {
+        StringBuilder sb = new StringBuilder("Lecturers:\n");
+        for (int i = 0; i < numOfLectrures; i++) {
+            sb.append(allLectrures[i].toString()).append("\n");
+        }
+        return sb.toString();
+    }
+    public float getLecturersAvgSalary(){
+        float avg;
+        float sum=0;
+        for(int i=0;i<numOfLectrures;i++){
+            sum=sum+allLectrures[i].getSalary();
+        }
+        avg=sum/numOfLectrures;
+        return avg;
+    }
+
+    public boolean addMemberToCommissionTeam(String commissionNameToCompare, String id){
+        boolean isCommExist=false;
+        boolean isLectExist=false;
+        Lecturer l1 = null;
+        Commission comm1 = null;
+        for(int i=0;i<numOfLectrures;i++){
+            if(allLectrures[i].getId().equals(id)){
+                isLectExist=true;
+                l1=allLectrures[i];
             }
         }
-        return true;
+        for(int j=0;j<numOfCommissions;j++){
+            if(allCommissions[j].getCommissionName().equals(commissionNameToCompare)){
+                isCommExist=true;
+                comm1=allCommissions[j];
+            }
+        }
+        if(isCommExist && isLectExist){
+            comm1.addToCommissionTeam(l1);
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 }
