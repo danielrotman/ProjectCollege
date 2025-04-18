@@ -13,10 +13,26 @@ public class Commission {
         setCommissionName(commisonName);
         setHeadOfCommission(headOfCommision);
     }
+
     public Commission(Commission commission2){
         this(commission2.commissionName,commission2.headOfCommission);
     }
-
+    public boolean IsLecturerNotInCommissionTeam(Lecturer l1){
+        if(commissionTeam==null){
+            return true;
+        }
+        else {
+            for (int i = 0; i < commissionTeam.length; i++) {
+                if (commissionTeam[i]!=null&&commissionTeam[i].equals(l1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public Lecturer [] getCommissionTeam(){
+        return this.commissionTeam;
+    }
     public Lecturer getHeadOfCommission() {
         return headOfCommission;
     }

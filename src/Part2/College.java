@@ -164,6 +164,7 @@ public class College {
         boolean isCommExist=false;
         boolean isLectExist=false;
         boolean isLectQualified=true;
+        boolean isLectNotInCommssion=true;
         Lecturer l1 = null;
         Commission comm1 = null;
         for(int i=0;i<numOfLectrures;i++){
@@ -181,7 +182,8 @@ public class College {
         if(comm1.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || comm1.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master){
             isLectQualified=false;
         }
-        if(isCommExist&&isLectExist&&isLectQualified){
+        isLectNotInCommssion=(comm1.IsLecturerNotInCommissionTeam(l1));
+        if(isCommExist&&isLectExist&&isLectQualified&&isLectNotInCommssion){
             comm1.setHeadOfCommission(l1);
             return true;
         }
