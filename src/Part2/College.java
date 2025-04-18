@@ -57,6 +57,32 @@ public class College {
                 return true;
             }
 
+    public boolean addDepartment(Department department){
+        if(numOfDepts==0){
+            allDepts=new Department[2];
+            if(department.getNumOfStudents()<0){
+                return false;
+            }
+            allDepts[numOfDepts++]=department;
+
+        }
+        else {
+            for (int i = 0; i < numOfDepts; i++) {
+                if (allDepts[i].getDepartmentName().equals(department.getDepartmentName())) {
+                    return false;
+                }
+                if (department.getNumOfStudents() < 0) {
+                    return false;
+                }
+            }
+            if(numOfDepts==allDepts.length){
+                allDepts = Arrays.copyOf(allDepts, allDepts.length * 2);
+            }
+            allDepts[numOfDepts++]=department;
+        }
+        return true;
+    }
+
 
     @Override
     public String toString() {
@@ -163,4 +189,5 @@ public class College {
             return false;
         }
     }
+
 }

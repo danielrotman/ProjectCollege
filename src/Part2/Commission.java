@@ -35,20 +35,37 @@ public class Commission {
     public void addToCommissionTeam(Lecturer l1){
     if(numOfCommissionMembers==0){
         commissionTeam=new Lecturer[2];
-    }
-    else if (numOfCommissionMembers == commissionTeam.length){
-        commissionTeam = Arrays.copyOf(commissionTeam, commissionTeam.length * 2);
-    }
         commissionTeam[numOfCommissionMembers++]=l1;
+    }
+    else {
+        for(int i=0;i<commissionTeam.length;i++) {
+            if (commissionTeam[i] == null) {
+                commissionTeam[i] = l1;
+                numOfCommissionMembers++;
+                return;
+            }
+        }
+        commissionTeam = Arrays.copyOf(commissionTeam, commissionTeam.length * 2);
+        commissionTeam[numOfCommissionMembers++] = l1;
+
+    }
     }
     public void removeLectFromCommission(Lecturer l1){
         if(numOfCommissionMembers==0){
-            commissionTeam=new Lecturer[2];
+            System.out.println("there is no Lecturers in this commission");
+            return;
         }
-        else if (numOfCommissionMembers == commissionTeam.length){
-            commissionTeam = Arrays.copyOf(commissionTeam, commissionTeam.length * 2);
+        else{
+            for(int i=0;i<commissionTeam.length;i++){
+                if(commissionTeam[i]!=null){
+                if(l1.getId().equals(commissionTeam[i].getId())) {
+                    commissionTeam[i] = null;
+                    numOfCommissionMembers--;
+                }
+                }
+            }
         }
-        commissionTeam[numOfCommissionMembers--]=null;
+
     }
     @Override
     public String toString() {
@@ -56,13 +73,21 @@ public class Commission {
         sb.append("Commission{")
                 .append("commissionName='").append(commissionName).append('\'')
                 .append(", commissionTeam=[");
+        if(numOfCommissionMembers==0){
+            sb.append("the commission is empty!");
 
-        for (int i = 0; i < numOfCommissionMembers; i++) {
-            sb.append(commissionTeam[i]);
-            if (i < numOfCommissionMembers - 1) {
-                sb.append(", ");
+        }
+        else {
+            for (Lecturer lecturer : commissionTeam) {
+                if (lecturer == null) {
+                    sb.append("");
+                } else {
+                    sb.append(lecturer);
+                    sb.append(", ");
+                }
             }
         }
+
         sb.append("], headOfCommission=").append(headOfCommission)
                 .append("}\n");
         return sb.toString();

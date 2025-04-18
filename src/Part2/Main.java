@@ -34,7 +34,7 @@ public class Main {
                 case 3-> addMemberToCommission(c1);
                 case 4-> updateHeadOfCommission(c1);
                 case 5-> removeMemberFromCommission(c1);
-                case 6-> option6();
+                case 6-> addDepartment(c1);
                 case 7-> ShowLecturersAvgSalary(c1);
                 case 8-> option8();
                 case 9-> ShowAllLecturersDetails(c1);
@@ -44,6 +44,17 @@ public class Main {
         }
         while (userOption!=0);
         s.close();
+    }
+
+    private static void addDepartment(College theCollege) {
+        Department department=createDepartment();
+        if(theCollege.addDepartment(department)){
+            System.out.println("Department added successfully");
+        }
+        else{
+            System.out.println("Department already exist or the num of students invalid.");
+        }
+
     }
 
     private static void ShowCommissionsDetails(College c1) {
@@ -61,8 +72,6 @@ public class Main {
 
 
     private static void addLecturer(College theCollege) {
-        String lectId,lectName,degreeName;
-        int salary;
         Lecturer lecturer=createLecturer();
         if(theCollege.addLecturer(lecturer)){
             System.out.println("added successfully");
@@ -98,9 +107,6 @@ public class Main {
         System.out.println("The average salary in the college is "+theCollege.getLecturersAvgSalary());
     }
 
-    private static void option6() {
-    }
-
     private static void removeMemberFromCommission(College theCollege) {
         String commissionName,lectId;
         s.nextLine();
@@ -130,7 +136,6 @@ public class Main {
             System.out.println("Update head of commission failed");
         }
     }
-
 
     private static void addMemberToCommission(College theCollege) {
         String commissionName,lectId;
@@ -163,6 +168,17 @@ public class Main {
         lectId=s.nextLine();
         Lecturer lect1=new Lecturer(lectName,lectId,degreeName,salary,degree);
         return lect1;
+    }
+    private static Department createDepartment(){
+        String departmentName;
+        int numOfStudents;
+        System.out.println("Enter the department name: ");
+        departmentName=s.nextLine();
+        s.nextLine();
+        System.out.println("Enter how many students in the department");
+        numOfStudents=s.nextInt();
+        Department department=new Department(departmentName,numOfStudents);
+        return department;
     }
 
 
