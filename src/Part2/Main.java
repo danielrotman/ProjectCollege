@@ -14,7 +14,8 @@ public class Main {
             "Press 7 to show average salaries of all lecturer's ",
             "Press 8 to show average salaries of specific department lecturer's ",
             "Press 9 to show the infos of all lecturer's ",
-            "Press 10 to show the infos of all commission's "
+            "Press 10 to show the infos of all commission's ",
+            "Press 11 to add lecturer to department",
     };
     public static Scanner s;
     public static void main(String[]args){
@@ -36,9 +37,10 @@ public class Main {
                 case 5-> removeMemberFromCommission(c1);
                 case 6-> addDepartment(c1);
                 case 7-> ShowLecturersAvgSalary(c1);
-                case 8-> option8();
+                case 8-> showDepartmentLecturersAvgSalary(c1);
                 case 9-> ShowAllLecturersDetails(c1);
                 case 10-> ShowCommissionsDetails(c1);
+                case 11->addLecturerToDepartment(c1);
                 default -> System.out.println("Invalid option choose again!");
             }
         }
@@ -46,10 +48,26 @@ public class Main {
         s.close();
     }
 
+    private static void addLecturerToDepartment(College c1) {
+        String deptName,lectId;
+        s.nextLine();
+        System.out.println("Enter Department name: ");
+        deptName=s.nextLine();
+        System.out.println("Enter lecturer id");
+        lectId=s.nextLine();
+        if(c1.addMemberToDepartment(deptName,lectId)){
+            System.out.println("Lecturer added to department");
+        }
+        else{
+            System.out.println("Lecturer or department does not exist");
+        }
+    }
+
     private static void addDepartment(College theCollege) {
         Department department=createDepartment();
         if(theCollege.addDepartment(department)){
             System.out.println("Department added successfully");
+            System.out.println("There are " + theCollege.getNumOfDepts() + " departments");
         }
         else{
             System.out.println("Department already exist or the num of students invalid.");
@@ -100,7 +118,16 @@ public class Main {
         System.out.println(theCollege.getAllLecturersDetails());
     }
 
-    private static void option8() {
+    private static void showDepartmentLecturersAvgSalary(College c1) {
+        String deptName;
+        s.nextLine();
+        System.out.println("Enter Department name: ");
+        deptName=s.nextLine();
+        float avg = c1.getDepartmentLecturersAvgSalary(deptName);
+        System.out.println(
+                avg == 0 ?
+                        "The department does not exit or There are no lecturers in this department currently." :
+                        "The average salary in the department is " + avg);
     }
 
     private static void ShowLecturersAvgSalary(College theCollege) {
@@ -172,9 +199,9 @@ public class Main {
     private static Department createDepartment(){
         String departmentName;
         int numOfStudents;
+        s.nextLine();
         System.out.println("Enter the department name: ");
         departmentName=s.nextLine();
-        s.nextLine();
         System.out.println("Enter how many students in the department");
         numOfStudents=s.nextInt();
         Department department=new Department(departmentName,numOfStudents);

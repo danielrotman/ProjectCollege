@@ -57,32 +57,26 @@ public class College {
                 return true;
             }
 
-    public boolean addDepartment(Department department){
-        if(numOfDepts==0){
-            allDepts=new Department[2];
-            if(department.getNumOfStudents()<0){
-                return false;
-            }
-            allDepts[numOfDepts++]=department;
-
-        }
-        else {
+    public boolean addDepartment(Department department) {
+        if (department.getNumOfStudents() < 0) {
+            return false;
+        } else {
             for (int i = 0; i < numOfDepts; i++) {
                 if (allDepts[i].getDepartmentName().equals(department.getDepartmentName())) {
                     return false;
                 }
-                if (department.getNumOfStudents() < 0) {
-                    return false;
-                }
             }
-            if(numOfDepts==allDepts.length){
-                allDepts = Arrays.copyOf(allDepts, allDepts.length * 2);
+            if (allDepts == null || numOfDepts == allDepts.length) {
+                allDepts = (allDepts == null) ? new Department[2] : Arrays.copyOf(allDepts, allDepts.length * 2);
             }
-            allDepts[numOfDepts++]=department;
+            allDepts[numOfDepts++] = department;
+            return true;
         }
-        return true;
     }
 
+    public int getNumOfDepts() {
+        return numOfDepts;
+    }
 
     @Override
     public String toString() {
@@ -108,6 +102,25 @@ public class College {
         avg=sum/numOfLectrures;
         return avg;
     }
+    public float getDepartmentLecturersAvgSalary(String deptName) {
+        for (int i = 0; i < numOfDepts; i++) {
+            if (allDepts[i].getDepartmentName().equals(deptName)) {
+                Department dept = allDepts[i];
+                if (dept.getNumOfDeptLecturers() == 0) {
+                    return 0;
+                }
+                float sum = 0;
+                for (int j = 0; j < numOfLectrures; i++) {
+                    if(allLectrures[j].getLectDept().equals(deptName)) {
+                        sum = sum + allLectrures[j].getSalary();
+                    }
+                }
+                return sum/dept.getNumOfDeptLecturers();
+            }
+        }
+        return 0;
+    }
+
     public boolean removeMemberFromCommission(String commissionNameToCompare, String id){
         boolean isCommExist=false;
         boolean isLectExist=false;
@@ -152,6 +165,33 @@ public class College {
         }
         if(isCommExist && isLectExist){
             comm1.addToCommissionTeam(l1);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
+    }
+    public boolean addMemberToDepartment(String deptName,String id){
+        boolean isDeptExist=false;
+        boolean isLectExist=false;
+        Lecturer l1 = null;
+        Department dept1 = null;
+        for(int i=0;i<numOfDepts;i++){
+            if(allLectrures[i].getId().equals(id)){
+                isLectExist=true;
+                l1=allLectrures[i];
+            }
+        }
+        for(int j=0;j<numOfDepts;j++){
+            if(allDepts[j].getDepartmentName().equals(deptName)){
+                isDeptExist=true;
+                dept1=allDepts[j];
+            }
+        }
+        if(isDeptExist && isLectExist){
+            dept1.addToDepartmentTeam(l1);
             return true;
         }
         else {
