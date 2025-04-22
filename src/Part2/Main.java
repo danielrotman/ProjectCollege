@@ -22,7 +22,6 @@ public class Main {
         int userOption;
         s=new Scanner(System.in);
         String theCollege;
-        final int EXIT=0;
         System.out.println("Enter college name: ");
         theCollege=s.nextLine();
         College c1=new College(theCollege);
@@ -191,8 +190,14 @@ public class Main {
         degreeName=s.nextLine();
         System.out.println("Enter lecturer name");
         lectName=s.nextLine();
-        System.out.println("Enter lecturer id");
-        lectId=s.nextLine();
+        do {
+            System.out.println("Enter lecturer id");
+            lectId = s.nextLine();
+            if(lectId.length()!=9){
+                System.out.println("Invalid id try again");
+            }
+        }
+        while(lectId.length()!=9);
         Lecturer lect1=new Lecturer(lectName,lectId,degreeName,salary,degree);
         return lect1;
     }
