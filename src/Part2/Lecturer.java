@@ -69,7 +69,7 @@ public class Lecturer {
     }
     @Override
     public String toString() {
-        return "Lecturer{name='" + name + "', id='" + id + "', degree=" + degree + ", salary=" + salary +",degree name="+degreeName+ "}";
+        return "Lecturer{Name='" + name + "', Id='" + id + "', degree Type=" + degree + ", Salary=" + salary +",Degree name="+degreeName+ "}";
     }
 
 }

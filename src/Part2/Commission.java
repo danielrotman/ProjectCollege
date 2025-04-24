@@ -86,9 +86,8 @@ public class Commission {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Commission{")
-                .append("commissionName='").append(commissionName).append('\'')
-                .append(", commissionTeam=[");
+        sb.append("commission Name='").append(commissionName).append('\'')
+                .append(", commission Team=[");
         if(numOfCommissionMembers==0){
             sb.append("the commission is empty!");
 
@@ -104,7 +103,7 @@ public class Commission {
             }
         }
 
-        sb.append("], headOfCommission=").append(headOfCommission)
+        sb.append("], head Of Commission= ").append(headOfCommission)
                 .append("}\n");
         return sb.toString();
     }

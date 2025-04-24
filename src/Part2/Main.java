@@ -46,38 +46,6 @@ public class Main {
         while (userOption!=0);
         s.close();
     }
-
-    private static void addLecturerToDepartment(College c1) {
-        String deptName,lectId;
-        s.nextLine();
-        System.out.println("Enter Department name: ");
-        deptName=s.nextLine();
-        System.out.println("Enter lecturer id");
-        lectId=s.nextLine();
-        if(c1.addMemberToDepartment(deptName,lectId)){
-            System.out.println("Lecturer added to department");
-        }
-        else{
-            System.out.println("Lecturer or department does not exist");
-        }
-    }
-
-    private static void addDepartment(College theCollege) {
-        Department department=createDepartment();
-        if(theCollege.addDepartment(department)){
-            System.out.println("Department added successfully");
-            System.out.println("There are " + theCollege.getNumOfDepts() + " departments");
-        }
-        else{
-            System.out.println("Department already exist or the num of students invalid.");
-        }
-
-    }
-
-    private static void ShowCommissionsDetails(College c1) {
-    System.out.println(c1.toString());
-    }
-
     private static int Showmenu() {
         System.out.println("\n====== Menu =======");
         for (int i = 0; i < MENU.length; i++) {
@@ -86,7 +54,6 @@ public class Main {
         System.out.println("Enter your choose: ");
         return s.nextInt();
     }
-
 
     private static void addLecturer(College theCollege) {
         Lecturer lecturer=createLecturer();
@@ -103,8 +70,8 @@ public class Main {
         s.nextLine();
         System.out.println("Enter Commission name: ");
         commissionName=s.nextLine();
-        Lecturer headOfcommision=createLecturer();
-        Commission commission=new Commission(commissionName,headOfcommision);
+        Lecturer headOfcommission=createLecturer();
+        Commission commission=new Commission(commissionName,headOfcommission);
         if(theCollege.addCommision(commission)){
             System.out.println("commission added successfully");
         }
@@ -113,38 +80,18 @@ public class Main {
         }
     }
 
-    private static void ShowAllLecturersDetails(College theCollege) {
-        System.out.println(theCollege.getAllLecturersDetails());
-    }
-
-    private static void showDepartmentLecturersAvgSalary(College c1) {
-        String deptName;
-        s.nextLine();
-        System.out.println("Enter Department name: ");
-        deptName=s.nextLine();
-        float avg = c1.getDepartmentLecturersAvgSalary(deptName);
-        System.out.println(
-                avg == 0 ?
-                        "The department does not exit or There are no lecturers in this department currently." :
-                        "The average salary in the department is " + avg);
-    }
-
-    private static void ShowLecturersAvgSalary(College theCollege) {
-        System.out.println("The average salary in the college is "+theCollege.getLecturersAvgSalary());
-    }
-
-    private static void removeMemberFromCommission(College theCollege) {
+    private static void addMemberToCommission(College theCollege) {
         String commissionName,lectId;
         s.nextLine();
         System.out.println("Enter Commission name: ");
         commissionName=s.nextLine();
         System.out.println("Enter lecturer id");
         lectId=s.nextLine();
-        if(theCollege.removeMemberFromCommission(commissionName,lectId)){
-            System.out.println("Member removed successfully");
+        if(theCollege.addMemberToCommissionTeam(commissionName,lectId)){
+            System.out.println("Lecturer added to commission team");
         }
-        else {
-            System.out.println("Removing member failed");
+        else{
+            System.out.println("Lecturer or commission does not exist");
         }
     }
 
@@ -163,18 +110,69 @@ public class Main {
         }
     }
 
-    private static void addMemberToCommission(College theCollege) {
+    private static void removeMemberFromCommission(College theCollege) {
         String commissionName,lectId;
         s.nextLine();
         System.out.println("Enter Commission name: ");
         commissionName=s.nextLine();
         System.out.println("Enter lecturer id");
         lectId=s.nextLine();
-        if(theCollege.addMemberToCommissionTeam(commissionName,lectId)){
-            System.out.println("Lecturer added to commission team");
+        if(theCollege.removeMemberFromCommission(commissionName,lectId)){
+            System.out.println("Member removed successfully");
+        }
+        else {
+            System.out.println("Removing member failed");
+        }
+    }
+
+    private static void addDepartment(College theCollege) {
+        Department department=createDepartment();
+        if(theCollege.addDepartment(department)){
+            System.out.println("Department added successfully");
+            System.out.println("There are " + theCollege.getNumOfDepts() + " departments");
         }
         else{
-            System.out.println("Lecturer or commission does not exist");
+            System.out.println("Department already exist or the num of students invalid.");
+        }
+
+    }
+
+    private static void ShowLecturersAvgSalary(College theCollege) {
+        System.out.println("The average salary in the college is "+theCollege.getLecturersAvgSalary());
+    }
+
+    private static void showDepartmentLecturersAvgSalary(College c1) {
+        String deptName;
+        s.nextLine();
+        System.out.println("Enter Department name: ");
+        deptName=s.nextLine();
+        float avg = c1.getDepartmentLecturersAvgSalary(deptName);
+        System.out.println(
+                avg == 0 ?
+                        "The department does not exit or There are no lecturers in this department currently." :
+                        "The average salary in the department is " + avg);
+    }
+
+    private static void ShowAllLecturersDetails(College theCollege) {
+        System.out.println(theCollege.getAllLecturersDetails());
+    }
+
+    private static void ShowCommissionsDetails(College c1) {
+        System.out.println(c1.toString());
+    }
+
+    private static void addLecturerToDepartment(College c1) {
+        String deptName,lectId;
+        s.nextLine();
+        System.out.println("Enter Department name: ");
+        deptName=s.nextLine();
+        System.out.println("Enter lecturer id");
+        lectId=s.nextLine();
+        if(c1.addMemberToDepartment(deptName,lectId)){
+            System.out.println("Lecturer added to department successfully! ");
+        }
+        else{
+            System.out.println("Lecturer or department does not exist! ");
         }
     }
 

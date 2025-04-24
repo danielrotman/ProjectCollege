@@ -80,7 +80,7 @@ public class College {
 
     @Override
     public String toString() {
-        StringBuilder sb= new StringBuilder("College "+collegeName+" has"+numOfCommissions+" ");
+        StringBuilder sb= new StringBuilder("College "+collegeName+" has "+numOfCommissions+" commission's: ");
         for(int i=0;i<numOfCommissions;i++){
            sb.append(allCommissions[i].toString()).append("\n");
         }
