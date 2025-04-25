@@ -60,13 +60,18 @@ public class Main {
         int salary;
         lectName=getStringFromUser("name");
         degreeName=getStringFromUser("degree name");
-        salary=getIntFromUser("Salary");
+        do {
+            salary = getIntFromUser("Salary");
+            if (salary < 0) {
+                System.out.println("Invalid salary try again!");
+            }
+        }while (salary<0);
         System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
         Lecturer.eDegree degree = Lecturer.eDegree.valueOf(s.nextLine());
         do{
             lectId=getStringFromUser("Id");
             if(lectId.length()!=9){
-                System.out.println("Invalid id try again");
+                System.out.println("Invalid id try again!");
             }
         }while (lectId.length()!=9);
         Lecturer lect1=new Lecturer(lectName,lectId,degreeName,salary,degree);
