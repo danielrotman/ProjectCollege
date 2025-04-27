@@ -58,7 +58,13 @@ public class Main {
     private static void addLecturer(College theCollege) {
         String lectId,lectName,degreeName;
         int salary;
-        lectName=getStringFromUser("name");
+        do {
+            lectName = getStringFromUser("name");
+            theCollege.isNameNotExist(lectName);
+            if(!theCollege.isNameNotExist(lectName)) {
+                System.out.println("lecturer name already exists");
+            }
+        }while (!theCollege.isNameNotExist(lectName));
         degreeName=getStringFromUser("degree name");
         do {
             salary = getIntFromUser("Salary");
@@ -76,23 +82,22 @@ public class Main {
         }while (lectId.length()!=9);
         Lecturer lect1=new Lecturer(lectName,lectId,degreeName,salary,degree);
         if(theCollege.addLecturer(lect1)){
-            System.out.println("added successfully");
+            System.out.println("lecturer added successfully");
         }
         else{
-            System.out.println("failed adding");
+            System.out.println("failed adding lecturer");
         }
     }
 
     private static void addCommission(College theCollege) {
-        String commissionName;
-        commissionName=getStringFromUser("Commission name: ");
-        String HeadOfCommissionName,degreeName,lectId;
+        String commissionName,HeadOfCommissionName,degreeName,lectId;
         int salary;
+        commissionName=getStringFromUser("Commission name ");
         HeadOfCommissionName=getStringFromUser("Head Of Commission Name");
         degreeName=getStringFromUser("degree name");
         salary=getIntFromUser("Salary");
         System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
-        Lecturer.eDegree degree=Lecturer.eDegree.valueOf(s.next());
+        Lecturer.eDegree degree = Lecturer.eDegree.valueOf(s.nextLine());
         do{
             lectId=getStringFromUser("Id");
             if(lectId.length()!=9){
@@ -112,7 +117,12 @@ public class Main {
     private static void addMemberToCommission(College theCollege) {
         String commissionName,lectId;
         commissionName=getStringFromUser("Commission name: ");
-        lectId=getStringFromUser("lecturer id");
+        do{
+            lectId=getStringFromUser("Id");
+            if(lectId.length()!=9){
+                System.out.println("Invalid id try again");
+            }
+        }while (lectId.length()!=9);
         if(theCollege.addMemberToCommissionTeam(commissionName,lectId)){
             System.out.println("Lecturer added to commission team");
         }
@@ -167,9 +177,7 @@ public class Main {
 
     private static void showDepartmentLecturersAvgSalary(College c1) {
         String deptName;
-        s.nextLine();
-        System.out.println("Enter Department name: ");
-        deptName=s.nextLine();
+        deptName=getStringFromUser("Department name ");
         float avg = c1.getDepartmentLecturersAvgSalary(deptName);
         System.out.println(
                 avg == 0 ?
@@ -188,7 +196,12 @@ public class Main {
     private static void addLecturerToDepartment(College c1) {
         String deptName,lectId;
         deptName=getStringFromUser("Department name: ");
-        lectId=getStringFromUser("lecturer id");
+        do{
+            lectId=getStringFromUser("Id");
+            if(lectId.length()!=9){
+                System.out.println("Invalid id try again");
+            }
+        }while (lectId.length()!=9);
         if(c1.addMemberToDepartment(deptName,lectId)){
             System.out.println("Lecturer added to department successfully! ");
         }
@@ -201,6 +214,7 @@ public class Main {
         System.out.println("Enter "+type+" :");
         return Integer.parseInt(s.nextLine());
     }
+
     private static String getStringFromUser(String type){
         System.out.println("Enter "+type+" :");
         return s.nextLine();

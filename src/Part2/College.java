@@ -21,7 +21,14 @@ public class College {
     public College(String collegeName) {
         this(0,0,0,collegeName);
     }
-
+    public boolean isNameNotExist(String name) {
+        for (int i = 0; i < numOfLectrures; i++) {
+            if (allLectrures[i].getName().equals((name))) {
+                return false;
+            }
+        }
+        return true;
+    }
     public boolean addLecturer(Lecturer l1){
         if(numOfLectrures==0){
             allLectrures=new Lecturer[2];
@@ -30,6 +37,9 @@ public class College {
         else {
             for (int i = 0; i < numOfLectrures; i++) {
                 if (allLectrures[i].getId().equals(l1.getId())) {
+                    return false;
+                }
+                if(allLectrures[i].getName().equals(l1.getName())){
                     return false;
                 }
             }
@@ -110,8 +120,8 @@ public class College {
                     return 0;
                 }
                 float sum = 0;
-                for (int j = 0; j < numOfLectrures; i++) {
-                    if(allLectrures[j].getLectDept().equals(deptName)) {
+                for (int j = 0; j < numOfLectrures;j++) {
+                    if(allLectrures[j].getLectDept().getDepartmentName().equals(deptName)) {
                         sum = sum + allLectrures[j].getSalary();
                     }
                 }
@@ -165,6 +175,7 @@ public class College {
         }
         if(isCommExist && isLectExist){
             comm1.addToCommissionTeam(l1);
+            l1.lecturerCommissionsList(comm1);
             return true;
         }
         else {
@@ -176,6 +187,7 @@ public class College {
     public boolean addMemberToDepartment(String deptName,String id){
         boolean isDeptExist=false;
         boolean isLectExist=false;
+        boolean isPossibleToAddLect=false;
         Lecturer l1 = null;
         Department dept1 = null;
         for(int i=0;i<numOfDepts;i++){
@@ -190,10 +202,16 @@ public class College {
                 dept1=allDepts[j];
             }
         }
-        if(isDeptExist && isLectExist){
-            dept1.addToDepartmentTeam(l1);
-            return true;
+        if(isDeptExist && isLectExist) {
+            if (l1.getLectDept() == null) {
+                isPossibleToAddLect = true;
+                l1.setLectDept(dept1);
+            }
         }
+            if(isPossibleToAddLect) {
+                dept1.addToDepartmentTeam(l1);
+                return true;
+            }
         else {
             return false;
         }
