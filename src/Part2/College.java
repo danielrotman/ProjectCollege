@@ -36,9 +36,6 @@ public class College {
         }
         else {
             for (int i = 0; i < numOfLectrures; i++) {
-                if (allLectrures[i].getId().equals(l1.getId())) {
-                    return false;
-                }
                 if(allLectrures[i].getName().equals(l1.getName())){
                     return false;
                 }
@@ -50,7 +47,14 @@ public class College {
         }
         return true;
     }
-
+    public Lecturer getLecturerByName(String name){
+        for (int i = 0; i < numOfLectrures; i++) {
+            if (allLectrures[i].getName().equals((name))) {
+                return allLectrures[i];
+            }
+        }
+        return null;
+    }
     public boolean addCommision(Commission commission){
         if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || commission.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master) {
             return false;
@@ -131,13 +135,13 @@ public class College {
         return 0;
     }
 
-    public boolean removeMemberFromCommission(String commissionNameToCompare, String id){
+    public boolean removeMemberFromCommission(String commissionNameToCompare, String name){
         boolean isCommExist=false;
         boolean isLectExist=false;
         Lecturer l1 = null;
         Commission comm1 = null;
         for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getId().equals(id)){
+            if(allLectrures[i].getName().equals(name)){
                 isLectExist=true;
                 l1=allLectrures[i];
             }
@@ -156,13 +160,13 @@ public class College {
             return false;
         }
     }
-    public boolean addMemberToCommissionTeam(String commissionNameToCompare, String id){
+    public boolean addMemberToCommissionTeam(String commissionNameToCompare, String name){
         boolean isCommExist=false;
         boolean isLectExist=false;
         Lecturer l1 = null;
         Commission comm1 = null;
         for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getId().equals(id)){
+            if(allLectrures[i].getName().equals(name)){
                 isLectExist=true;
                 l1=allLectrures[i];
             }
@@ -184,14 +188,14 @@ public class College {
 
 
     }
-    public boolean addMemberToDepartment(String deptName,String id){
+    public boolean addMemberToDepartment(String deptName,String name){
         boolean isDeptExist=false;
         boolean isLectExist=false;
         boolean isPossibleToAddLect=false;
         Lecturer l1 = null;
         Department dept1 = null;
         for(int i=0;i<numOfDepts;i++){
-            if(allLectrures[i].getId().equals(id)){
+            if(allLectrures[i].getName().equals(name)){
                 isLectExist=true;
                 l1=allLectrures[i];
             }
@@ -218,7 +222,7 @@ public class College {
 
 
     }
-    public boolean isPossibleToChangeHeadOfCommission(String CommissionName,String id){
+    public boolean isPossibleToChangeHeadOfCommission(String CommissionName,String name){
         boolean isCommExist=false;
         boolean isLectExist=false;
         boolean isLectQualified=true;
@@ -226,7 +230,7 @@ public class College {
         Lecturer l1 = null;
         Commission comm1 = null;
         for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getId().equals(id)){
+            if(allLectrures[i].getName().equals(name)){
                 isLectExist=true;
                 l1=allLectrures[i];
             }

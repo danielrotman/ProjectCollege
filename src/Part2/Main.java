@@ -94,6 +94,18 @@ public class Main {
         int salary;
         commissionName=getStringFromUser("Commission name ");
         HeadOfCommissionName=getStringFromUser("Head Of Commission Name");
+        if(!theCollege.isNameNotExist(HeadOfCommissionName)){
+            Lecturer l1=theCollege.getLecturerByName(HeadOfCommissionName);
+            Commission commission=new Commission(commissionName,l1);
+            if(theCollege.addCommision(commission)){
+                System.out.println("commission added successfully");
+                return;
+            }
+            else{
+                System.out.println("failed adding commission");
+                return;
+            }
+        }
         degreeName=getStringFromUser("degree name");
         salary=getIntFromUser("Salary");
         System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
@@ -115,15 +127,10 @@ public class Main {
     }
 
     private static void addMemberToCommission(College theCollege) {
-        String commissionName,lectId;
+        String commissionName,lectName;
         commissionName=getStringFromUser("Commission name: ");
-        do{
-            lectId=getStringFromUser("Id");
-            if(lectId.length()!=9){
-                System.out.println("Invalid id try again");
-            }
-        }while (lectId.length()!=9);
-        if(theCollege.addMemberToCommissionTeam(commissionName,lectId)){
+        lectName=getStringFromUser("name");
+        if(theCollege.addMemberToCommissionTeam(commissionName,lectName)){
             System.out.println("Lecturer added to commission team");
         }
         else{
@@ -132,10 +139,10 @@ public class Main {
     }
 
     private static void updateHeadOfCommission(College theCollege) {
-        String commissionName,lectId;
+        String commissionName,lectName;
         commissionName=getStringFromUser("Commission name: ");
-        lectId=getStringFromUser("lecturer id");
-        if(theCollege.isPossibleToChangeHeadOfCommission(commissionName,lectId)){
+        lectName=getStringFromUser("lecturer name");
+        if(theCollege.isPossibleToChangeHeadOfCommission(commissionName,lectName)){
             System.out.println("Head of commission changed");
         }
         else{
@@ -144,10 +151,10 @@ public class Main {
     }
 
     private static void removeMemberFromCommission(College theCollege) {
-        String commissionName,lectId;
+        String commissionName,lectName;
         commissionName=getStringFromUser("Commission name: ");
-        lectId=getStringFromUser("lecturer id");
-        if(theCollege.removeMemberFromCommission(commissionName,lectId)){
+        lectName=getStringFromUser("lecturer name");
+        if(theCollege.removeMemberFromCommission(commissionName,lectName)){
             System.out.println("Member removed successfully");
         }
         else {
@@ -194,15 +201,10 @@ public class Main {
     }
 
     private static void addLecturerToDepartment(College c1) {
-        String deptName,lectId;
-        deptName=getStringFromUser("Department name: ");
-        do{
-            lectId=getStringFromUser("Id");
-            if(lectId.length()!=9){
-                System.out.println("Invalid id try again");
-            }
-        }while (lectId.length()!=9);
-        if(c1.addMemberToDepartment(deptName,lectId)){
+        String deptName,lectName;
+        deptName=getStringFromUser("Department name ");
+        lectName=getStringFromUser("Lecturer name ");
+        if(c1.addMemberToDepartment(deptName,lectName)){
             System.out.println("Lecturer added to department successfully! ");
         }
         else{

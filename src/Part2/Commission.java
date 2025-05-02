@@ -103,8 +103,8 @@ public class Commission {
             }
         }
 
-        sb.append("], head Of Commission= ").append(headOfCommission)
-                .append("}\n");
+        sb.append("], head Of Commission= ").append(headOfCommission.getName())
+                .append(".");
         return sb.toString();
     }
 }
