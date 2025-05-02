@@ -14,9 +14,6 @@ public class Commission {
         setHeadOfCommission(headOfCommision);
     }
 
-    public Commission(Commission commission2){
-        this(commission2.commissionName,commission2.headOfCommission);
-    }
     public boolean IsLecturerNotInCommissionTeam(Lecturer l1){
         if(commissionTeam==null){
             return true;
@@ -29,9 +26,6 @@ public class Commission {
             }
         }
         return true;
-    }
-    public Lecturer [] getCommissionTeam(){
-        return this.commissionTeam;
     }
     public Lecturer getHeadOfCommission() {
         return headOfCommission;
@@ -93,12 +87,14 @@ public class Commission {
 
         }
         else {
+            boolean first=true;
             for (Lecturer lecturer : commissionTeam) {
-                if (lecturer == null) {
-                    sb.append("");
-                } else {
-                    sb.append(lecturer);
-                    sb.append(", ");
+                if (lecturer !=null) {
+                    if(!first) {
+                        sb.append(",");
+                    }
+                    sb.append(lecturer.getName());
+                    first=false;
                 }
             }
         }

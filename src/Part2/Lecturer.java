@@ -20,9 +20,6 @@ public class Lecturer {
         setSalary(salary);
         setDegree(degree);
     }
-    public Lecturer(Lecturer l2){
-        this(l2.name,l2.id, l2.degreeName, l2.salary, l2.degree);
-    }
     public String getName() {
         return name;
     }
@@ -47,10 +44,6 @@ public class Lecturer {
         this.degree = degree;
     }
 
-    public String getDegreeName() {
-        return degreeName;
-    }
-
     public void setDegreeName(String degreeName) {
         this.degreeName = degreeName;
     }
@@ -65,9 +58,6 @@ public class Lecturer {
 
     public Department getLectDept() {
         return lectDept;
-    }
-    public Commission[] getLectCommissions() {
-        return lectCommissions;
     }
     public void setLectDept(Department lectDept) {
         this.lectDept = lectDept;

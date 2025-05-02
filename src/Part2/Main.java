@@ -90,45 +90,45 @@ public class Main {
     }
 
     private static void addCommission(College theCollege) {
-        String commissionName,HeadOfCommissionName,degreeName,lectId;
+        String commissionName, HeadOfCommissionName, degreeName, lectId;
         int salary;
-        commissionName=getStringFromUser("Commission name ");
-        HeadOfCommissionName=getStringFromUser("Head Of Commission Name");
-        if(!theCollege.isNameNotExist(HeadOfCommissionName)){
-            Lecturer l1=theCollege.getLecturerByName(HeadOfCommissionName);
-            Commission commission=new Commission(commissionName,l1);
-            if(theCollege.addCommision(commission)){
+        commissionName = getStringFromUser("Commission name ");
+        HeadOfCommissionName = getStringFromUser("Head Of Commission Name");
+        if (!theCollege.isNameNotExist(HeadOfCommissionName)) {
+            Lecturer l1 = theCollege.getLecturerByName(HeadOfCommissionName);
+            Commission commission = new Commission(commissionName, l1);
+            if (theCollege.addCommision(commission)) {
                 System.out.println("commission added successfully");
                 return;
-            }
-            else{
+            } else {
                 System.out.println("failed adding commission");
                 return;
             }
         }
-        degreeName=getStringFromUser("degree name");
-        salary=getIntFromUser("Salary");
+        degreeName = getStringFromUser("degree name");
+        salary = getIntFromUser("Salary");
         System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
         Lecturer.eDegree degree = Lecturer.eDegree.valueOf(s.nextLine());
-        do{
-            lectId=getStringFromUser("Id");
-            if(lectId.length()!=9){
+        do {
+            lectId = getStringFromUser("Id");
+            if (lectId.length() != 9) {
                 System.out.println("Invalid id try again");
             }
-        }while (lectId.length()!=9);
-        Lecturer headOfcommission= new Lecturer(HeadOfCommissionName,lectId,degreeName,salary,degree);
-        Commission commission=new Commission(commissionName,headOfcommission);
-        if(theCollege.addCommision(commission)){
-            System.out.println("commission added successfully");
-        }
-        else{
-            System.out.println("failed adding commission");
+        } while (lectId.length() != 9);
+        Lecturer headOfcommission = new Lecturer(HeadOfCommissionName, lectId, degreeName, salary, degree);
+        if (theCollege.addLecturer(headOfcommission)) {
+            Commission commission = new Commission(commissionName, headOfcommission);
+            if (theCollege.addCommision(commission)) {
+                System.out.println("commission added successfully");
+            } else {
+                System.out.println("failed adding commission");
+            }
         }
     }
 
     private static void addMemberToCommission(College theCollege) {
         String commissionName,lectName;
-        commissionName=getStringFromUser("Commission name: ");
+        commissionName=getStringFromUser("Commission name ");
         lectName=getStringFromUser("name");
         if(theCollege.addMemberToCommissionTeam(commissionName,lectName)){
             System.out.println("Lecturer added to commission team");
@@ -140,7 +140,7 @@ public class Main {
 
     private static void updateHeadOfCommission(College theCollege) {
         String commissionName,lectName;
-        commissionName=getStringFromUser("Commission name: ");
+        commissionName=getStringFromUser("Commission name ");
         lectName=getStringFromUser("lecturer name");
         if(theCollege.isPossibleToChangeHeadOfCommission(commissionName,lectName)){
             System.out.println("Head of commission changed");
@@ -152,7 +152,7 @@ public class Main {
 
     private static void removeMemberFromCommission(College theCollege) {
         String commissionName,lectName;
-        commissionName=getStringFromUser("Commission name: ");
+        commissionName=getStringFromUser("Commission name ");
         lectName=getStringFromUser("lecturer name");
         if(theCollege.removeMemberFromCommission(commissionName,lectName)){
             System.out.println("Member removed successfully");

@@ -240,11 +240,12 @@ public class College {
                 isCommExist=true;
                 comm1=allCommissions[j];
             }
+        }if(isCommExist && isLectExist) {
+            if (comm1.getHeadOfCommission().getDegree() == Lecturer.eDegree.Bachelor || comm1.getHeadOfCommission().getDegree() == Lecturer.eDegree.Master) {
+                isLectQualified = false;
+            }
+            isLectNotInCommssion = (comm1.IsLecturerNotInCommissionTeam(l1));
         }
-        if(comm1.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || comm1.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master){
-            isLectQualified=false;
-        }
-        isLectNotInCommssion=(comm1.IsLecturerNotInCommissionTeam(l1));
         if(isCommExist&&isLectExist&&isLectQualified&&isLectNotInCommssion){
             comm1.setHeadOfCommission(l1);
             return true;
