@@ -1,4 +1,4 @@
-package Part2;
+package Daniel_Niv;
 
 import java.util.Arrays;
 
@@ -54,6 +54,18 @@ public class Lecturer {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public void removeLecturerFromCommission(Commission commission){
+        if(numOfLecturerCommissions==0){
+            return;
+        }
+        for(int i=0;i<lectCommissions.length;i++){
+            if(lectCommissions[i]==commission){
+                lectCommissions[i]=null;
+                numOfLecturerCommissions--;
+            }
+        }
     }
 
     public Department getLectDept() {

@@ -1,4 +1,4 @@
-package Part2;
+package Daniel_Niv;
 
 import java.util.Arrays;
 
@@ -21,6 +21,7 @@ public class College {
     public College(String collegeName) {
         this(0,0,0,collegeName);
     }
+
     public boolean isNameNotExist(String name) {
         for (int i = 0; i < numOfLectrures; i++) {
             if (allLectrures[i].getName().equals((name))) {
@@ -29,6 +30,7 @@ public class College {
         }
         return true;
     }
+
     public boolean addLecturer(Lecturer l1){
         if(numOfLectrures==0){
             allLectrures=new Lecturer[2];
@@ -36,7 +38,7 @@ public class College {
         }
         else {
             for (int i = 0; i < numOfLectrures; i++) {
-                if(allLectrures[i].getName().equals(l1.getName())){
+                if(!isNameNotExist(l1.getName())){
                     return false;
                 }
             }
@@ -47,6 +49,7 @@ public class College {
         }
         return true;
     }
+
     public Lecturer getLecturerByName(String name){
         for (int i = 0; i < numOfLectrures; i++) {
             if (allLectrures[i].getName().equals((name))) {
@@ -55,6 +58,7 @@ public class College {
         }
         return null;
     }
+
     public boolean addCommision(Commission commission){
         if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || commission.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master) {
             return false;
@@ -92,14 +96,6 @@ public class College {
         return numOfDepts;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb= new StringBuilder("College "+collegeName+" has "+numOfCommissions+" commission's: ");
-        for(int i=0;i<numOfCommissions;i++){
-           sb.append(allCommissions[i].toString()).append("\n");
-        }
-        return sb.toString();
-    }
     public String getAllLecturersDetails() {
         StringBuilder sb = new StringBuilder("Lecturers:\n");
         for (int i = 0; i < numOfLectrures; i++) {
@@ -107,6 +103,7 @@ public class College {
         }
         return sb.toString();
     }
+
     public float getLecturersAvgSalary(){
         float avg;
         float sum=0;
@@ -116,6 +113,7 @@ public class College {
         avg=sum/numOfLectrures;
         return avg;
     }
+
     public float getDepartmentLecturersAvgSalary(String deptName) {
         for (int i = 0; i < numOfDepts; i++) {
             if (allDepts[i].getDepartmentName().equals(deptName)) {
@@ -125,7 +123,8 @@ public class College {
                 }
                 float sum = 0;
                 for (int j = 0; j < numOfLectrures;j++) {
-                    if(allLectrures[j].getLectDept().getDepartmentName().equals(deptName)) {
+
+                    if(allLectrures[j]!=null&&allLectrures[j].getLectDept().getDepartmentName().equals(deptName)) {
                         sum = sum + allLectrures[j].getSalary();
                     }
                 }
@@ -154,12 +153,14 @@ public class College {
         }
         if(isCommExist&&isLectExist){
             comm1.removeLectFromCommission(l1);
+            l1.removeLecturerFromCommission(comm1);
             return true;
         }
         else {
             return false;
         }
     }
+
     public boolean addMemberToCommissionTeam(String commissionNameToCompare, String name){
         boolean isCommExist=false;
         boolean isLectExist=false;
@@ -170,17 +171,27 @@ public class College {
                 isLectExist=true;
                 l1=allLectrures[i];
             }
+
         }
         for(int j=0;j<numOfCommissions;j++){
             if(allCommissions[j].getCommissionName().equals(commissionNameToCompare)){
                 isCommExist=true;
                 comm1=allCommissions[j];
+                if (comm1.getHeadOfCommission().getName().equals(name)){
+                    return false;
+                }
             }
         }
-        if(isCommExist && isLectExist){
-            comm1.addToCommissionTeam(l1);
-            l1.lecturerCommissionsList(comm1);
-            return true;
+
+        if(isCommExist && isLectExist) {
+            if (comm1.IsLecturerNotInCommissionTeam(l1)) {
+                comm1.addToCommissionTeam(l1);
+                l1.lecturerCommissionsList(comm1);
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else {
             return false;
@@ -188,40 +199,42 @@ public class College {
 
 
     }
+
     public boolean addMemberToDepartment(String deptName,String name){
         boolean isDeptExist=false;
         boolean isLectExist=false;
         boolean isPossibleToAddLect=false;
         Lecturer l1 = null;
         Department dept1 = null;
-        for(int i=0;i<numOfDepts;i++){
+        for(int i=0;i<numOfLectrures;i++){
             if(allLectrures[i].getName().equals(name)){
                 isLectExist=true;
+
                 l1=allLectrures[i];
             }
         }
         for(int j=0;j<numOfDepts;j++){
             if(allDepts[j].getDepartmentName().equals(deptName)){
                 isDeptExist=true;
+
                 dept1=allDepts[j];
             }
         }
+
         if(isDeptExist && isLectExist) {
             if (l1.getLectDept() == null) {
                 isPossibleToAddLect = true;
                 l1.setLectDept(dept1);
+                return dept1.addToDepartmentTeam(l1);
             }
         }
-            if(isPossibleToAddLect) {
-                dept1.addToDepartmentTeam(l1);
-                return true;
-            }
-        else {
             return false;
-        }
+
+
 
 
     }
+
     public boolean isPossibleToChangeHeadOfCommission(String CommissionName,String name){
         boolean isCommExist=false;
         boolean isLectExist=false;
@@ -255,4 +268,12 @@ public class College {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb= new StringBuilder("College "+collegeName+" has "+numOfCommissions+" commission's: ");
+        for(int i=0;i<numOfCommissions;i++){
+            sb.append(allCommissions[i].toString()).append("\n");
+        }
+        return sb.toString();
+    }
 }

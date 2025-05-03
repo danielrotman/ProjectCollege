@@ -1,4 +1,4 @@
-package Part2;
+package Daniel_Niv;
 
 import java.util.Arrays;
 
@@ -27,6 +27,7 @@ public class Commission {
         }
         return true;
     }
+
     public Lecturer getHeadOfCommission() {
         return headOfCommission;
     }
@@ -42,6 +43,7 @@ public class Commission {
     public void setCommissionName(String commissionName) {
         this.commissionName = commissionName;
     }
+
     public void addToCommissionTeam(Lecturer l1){
     if(numOfCommissionMembers==0){
         commissionTeam=new Lecturer[2];
@@ -60,6 +62,7 @@ public class Commission {
 
     }
     }
+
     public void removeLectFromCommission(Lecturer l1){
         if(numOfCommissionMembers==0){
             System.out.println("there is no Lecturers in this commission");
@@ -69,6 +72,7 @@ public class Commission {
             for(int i=0;i<commissionTeam.length;i++){
                 if(commissionTeam[i]!=null){
                 if(l1.getId().equals(commissionTeam[i].getId())) {
+
                     commissionTeam[i] = null;
                     numOfCommissionMembers--;
                 }
@@ -77,6 +81,7 @@ public class Commission {
         }
 
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

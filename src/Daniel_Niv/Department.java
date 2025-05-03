@@ -1,4 +1,4 @@
-package Part2;
+package Daniel_Niv;
 
 import java.util.Arrays;
 
@@ -30,21 +30,25 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    public void addToDepartmentTeam(Lecturer l1){
+    public boolean addToDepartmentTeam(Lecturer l1){
             if(numOfDeptLecturers==0){
         deptLectrures=new Lecturer[2];
         deptLectrures[numOfDeptLecturers++]=l1;
+        return true;
     }
     else {
         for(int i=0;i<deptLectrures.length;i++) {
+            if(deptLectrures[i]!=null&&deptLectrures[i]==l1){
+                return false;
+            }
             if (deptLectrures[i] == null) {
                 deptLectrures[i] = l1;
                 numOfDeptLecturers++;
-                return;
             }
         }
         deptLectrures = Arrays.copyOf(deptLectrures, deptLectrures.length * 2);
         deptLectrures[numOfDeptLecturers++] = l1;
+        return true;
 
     }
 }

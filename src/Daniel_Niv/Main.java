@@ -1,6 +1,8 @@
-package Part2;
+package Daniel_Niv;
 
 import java.util.Scanner;
+
+//Daniel Rotman id:324069657, Niv Markovich id:207532680
 
 public class Main {
     private static final String[] MENU={
@@ -130,11 +132,13 @@ public class Main {
         String commissionName,lectName;
         commissionName=getStringFromUser("Commission name ");
         lectName=getStringFromUser("name");
+
+
         if(theCollege.addMemberToCommissionTeam(commissionName,lectName)){
             System.out.println("Lecturer added to commission team");
         }
         else{
-            System.out.println("Lecturer or commission does not exist");
+            System.out.println("Lecturer or commission does not exist/Lecturer already Head of Commission/already in the Commission! ");
         }
     }
 
@@ -189,7 +193,7 @@ public class Main {
         System.out.println(
                 avg == 0 ?
                         "The department does not exit or There are no lecturers in this department currently." :
-                        "The average salary in the department is " + avg);
+                        "The average salary in the department is " +String.format("%.2f", avg));
     }
 
     private static void ShowAllLecturersDetails(College theCollege) {
@@ -208,7 +212,7 @@ public class Main {
             System.out.println("Lecturer added to department successfully! ");
         }
         else{
-            System.out.println("Lecturer or department does not exist! ");
+            System.out.println("Lecturer or department does not exist!/the lecturer already in department ");
         }
     }
 
