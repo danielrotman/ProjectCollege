@@ -14,20 +14,18 @@ public class Commission {
         setHeadOfCommission(headOfCommision);
     }
 
-    public boolean IsLecturerNotInCommissionTeam(Lecturer l1){
+    public void IsLecturerNotInCommissionTeam(Lecturer l1) throws AlreadyExistException {
         if(commissionTeam==null){
-            return true;
+            return;
         }
-        else {
+        if (commissionTeam.length != 0) {
             for (int i = 0; i < commissionTeam.length; i++) {
-                if (commissionTeam[i]!=null&&commissionTeam[i].equals(l1)) {
-                    return false;
+                if (commissionTeam[i].equals(l1)) {
+                    throw new AlreadyExistException(l1.getName());
                 }
             }
         }
-        return true;
     }
-
     public Lecturer getHeadOfCommission() {
         return headOfCommission;
     }

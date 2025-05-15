@@ -18,6 +18,9 @@ public class Main {
             "Press 9 to show the infos of all lecturer's ",
             "Press 10 to show the infos of all commission's ",
             "Press 11 to add lecturer to department",
+            "Press 12 to compare between doctors/professors by articles",
+            "Press 13 to compare between departments",
+            "Press 14 to duplicate commission",
     };
     public static Scanner s;
     public static void main(String[]args){
@@ -58,53 +61,68 @@ public class Main {
     }
 
     private static void addLecturer(College theCollege) {
-        String lectId,lectName,degreeName;
+        String lectId, lectName = "", degreeName;
+        boolean nameOk = false;
+        boolean degreeOk = false;
         int salary;
-        do {
-            lectName = getStringFromUser("name");
-            theCollege.isNameNotExist(lectName);
-            if(!theCollege.isNameNotExist(lectName)) {
-                System.out.println("lecturer name already exists");
+        while (!nameOk) {
+            try {
+                lectName = getStringFromUser("name");
+                theCollege.isNameNotExist(lectName);
+                nameOk = true;
+            } catch (AlreadyExistException e) {
+                System.out.println(e.getMessage());
             }
-        }while (!theCollege.isNameNotExist(lectName));
-        degreeName=getStringFromUser("degree name");
+        }
+        degreeName = getStringFromUser("degree name");
         do {
             salary = getIntFromUser("Salary");
             if (salary < 0) {
                 System.out.println("Invalid salary try again!");
             }
-        }while (salary<0);
-        System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
-        Lecturer.eDegree degree = Lecturer.eDegree.valueOf(s.nextLine());
-        do{
-            lectId=getStringFromUser("Id");
-            if(lectId.length()!=9){
+        } while (salary < 0);
+        Lecturer.eDegree degree = null;
+        while (!degreeOk) {
+            try {
+                System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
+                degree = Lecturer.eDegree.valueOf(s.nextLine());
+                degreeOk = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("not one of the options");
+            }
+        }
+        do {
+            lectId = getStringFromUser("Id");
+            if (lectId.length() != 9) {
                 System.out.println("Invalid id try again!");
             }
-        }while (lectId.length()!=9);
-        Lecturer lect1=new Lecturer(lectName,lectId,degreeName,salary,degree);
-        if(theCollege.addLecturer(lect1)){
-            System.out.println("lecturer added successfully");
-        }
-        else{
-            System.out.println("failed adding lecturer");
-        }
+        } while (lectId.length() != 9);
+        Lecturer lect1 = new Lecturer(lectName, lectId, degreeName, salary, degree);
+        theCollege.addLecturer(lect1);
+        System.out.println("lecturer added successfully");
     }
 
     private static void addCommission(College theCollege) {
-        String commissionName, HeadOfCommissionName, degreeName, lectId;
+        String commissionName = "", HeadOfCommissionName = "", degreeName, lectId;
         int salary;
-        commissionName = getStringFromUser("Commission name ");
-        HeadOfCommissionName = getStringFromUser("Head Of Commission Name");
-        if (!theCollege.isNameNotExist(HeadOfCommissionName)) {
-            Lecturer l1 = theCollege.getLecturerByName(HeadOfCommissionName);
-            Commission commission = new Commission(commissionName, l1);
-            if (theCollege.addCommision(commission)) {
-                System.out.println("commission added successfully");
-                return;
-            } else {
-                System.out.println("failed adding commission");
-                return;
+        boolean nameOk=false;
+        while (!nameOk) {
+            try {
+                commissionName = getStringFromUser("Commission name");
+                theCollege.isNameNotExist(commissionName);
+                nameOk = true;
+            } catch (AlreadyExistException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        nameOk=false;
+        while (!nameOk) {
+            try {
+                HeadOfCommissionName = getStringFromUser("Head Of Commission Name");
+                theCollege.isNameNotExist(HeadOfCommissionName);
+                nameOk = true;
+            } catch (AlreadyExistException e) {
+                System.out.println(e.getMessage());
             }
         }
         degreeName = getStringFromUser("degree name");
@@ -118,27 +136,32 @@ public class Main {
             }
         } while (lectId.length() != 9);
         Lecturer headOfcommission = new Lecturer(HeadOfCommissionName, lectId, degreeName, salary, degree);
-        if (theCollege.addLecturer(headOfcommission)) {
+        theCollege.addLecturer(headOfcommission);
             Commission commission = new Commission(commissionName, headOfcommission);
             if (theCollege.addCommision(commission)) {
                 System.out.println("commission added successfully");
             } else {
                 System.out.println("failed adding commission");
             }
-        }
     }
 
     private static void addMemberToCommission(College theCollege) {
-        String commissionName,lectName;
-        commissionName=getStringFromUser("Commission name ");
-        lectName=getStringFromUser("name");
-
-
-        if(theCollege.addMemberToCommissionTeam(commissionName,lectName)){
-            System.out.println("Lecturer added to commission team");
-        }
-        else{
-            System.out.println("Lecturer or commission does not exist/Lecturer already Head of Commission/already in the Commission! ");
+        String commissionName = "",lectName = "";
+        boolean nameOk=false;
+        while (!nameOk) {
+            try {
+                commissionName = getStringFromUser("Commission name");
+                lectName = getStringFromUser("name");
+                theCollege.IsNameExist(lectName);
+                theCollege.addMemberToCommissionTeam(commissionName,lectName);
+                nameOk = true;
+                System.out.println("Lecturer added successfully");
+            } catch (CommissionNotExistException | LecturerNotExistException | LectruerAlreadyHeadOfCommissionException e) {
+                System.out.println(e.getMessage());
+            }
+            catch (CollegeException e){
+                System.out.println("General error: Lecturer already in commission");
+            }
         }
     }
 
