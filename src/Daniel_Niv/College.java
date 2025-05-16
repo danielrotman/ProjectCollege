@@ -22,6 +22,14 @@ public class College {
         this(0,0,0,collegeName);
     }
 
+    public void isCommissionExist(String name)throws AlreadyExistException {
+        for (int i = 0; i < numOfCommissions; i++) {
+            if (allCommissions[i].getCommissionName().equals((name))) {
+                throw new AlreadyExistException(name);
+            }
+        }
+    }
+
     public void isNameNotExist(String name) throws AlreadyExistException {
         for (int i = 0; i < numOfLectrures; i++) {
             if (allLectrures[i].getName().equals((name))) {
@@ -63,20 +71,19 @@ public class College {
         return null;
     }
 
-    public boolean addCommision(Commission commission){
+    public void addCommision(Commission commission) throws CollegeException{
         if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || commission.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master) {
-            return false;
+            throw new NotQualifiedException(commission.getHeadOfCommission().getName());
         }
             for(int i=0;i<numOfCommissions;i++) {
                 if (allCommissions[i].getCommissionName().equals(commission.getCommissionName())) {
-                    return false;
+                    throw new AlreadyExistException(commission.getCommissionName());
                 }
             }
                 if(allCommissions==null || numOfCommissions==allCommissions.length){
                     allCommissions=(allCommissions==null)?new Commission[2]:Arrays.copyOf(allCommissions,allCommissions.length*2);
                 }
                 allCommissions[numOfCommissions++]=commission;
-                return true;
             }
 
     public boolean addDepartment(Department department) {
@@ -138,7 +145,7 @@ public class College {
         return 0;
     }
 
-    public boolean removeMemberFromCommission(String commissionNameToCompare, String name){
+    public void removeMemberFromCommission(String commissionNameToCompare, String name)throws CollegeException{
         boolean isCommExist=false;
         boolean isLectExist=false;
         Lecturer l1 = null;
@@ -149,20 +156,20 @@ public class College {
                 l1=allLectrures[i];
             }
         }
+        if(!isLectExist){
+            throw new LecturerNotExistException(name);
+        }
         for(int j=0;j<numOfCommissions;j++){
             if(allCommissions[j].getCommissionName().equals(commissionNameToCompare)){
                 isCommExist=true;
                 comm1=allCommissions[j];
             }
         }
-        if(isCommExist&&isLectExist){
+        if(!isCommExist) {
+            throw new CommissionNotExistException(commissionNameToCompare);
+        }
             comm1.removeLectFromCommission(l1);
             l1.removeLecturerFromCommission(comm1);
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
     public void addMemberToCommissionTeam(String commissionNameToCompare, String name)throws CollegeException{
@@ -227,11 +234,9 @@ public class College {
 
     }
 
-    public boolean isPossibleToChangeHeadOfCommission(String CommissionName,String name){
+    public void isPossibleToChangeHeadOfCommission(String CommissionName,String name) throws CollegeException{
         boolean isCommExist=false;
         boolean isLectExist=false;
-        boolean isLectQualified=true;
-        boolean isLectNotInCommssion=true;
         Lecturer l1 = null;
         Commission comm1 = null;
         for(int i=0;i<numOfLectrures;i++){
@@ -240,24 +245,26 @@ public class College {
                 l1=allLectrures[i];
             }
         }
+        if (!isLectExist){
+            throw new LecturerNotExistException(name);
+        }
         for(int j=0;j<numOfCommissions;j++){
             if(allCommissions[j].getCommissionName().equals(CommissionName)){
                 isCommExist=true;
                 comm1=allCommissions[j];
+                if (comm1.getHeadOfCommission().getName().equals(name)){
+                    throw new LectruerAlreadyHeadOfCommissionException(name);
+                }
             }
-        }if(isCommExist && isLectExist) {
-            if (comm1.getHeadOfCommission().getDegree() == Lecturer.eDegree.Bachelor || comm1.getHeadOfCommission().getDegree() == Lecturer.eDegree.Master) {
-                isLectQualified = false;
-            }
-//            isLectNotInCommssion = (comm1.IsLecturerNotInCommissionTeam(l1));
         }
-        if(isCommExist&&isLectExist&&isLectQualified&&isLectNotInCommssion){
+        if (!isCommExist){
+            throw new CommissionNotExistException(CommissionName);
+        }
+            if (l1.getDegree() == Lecturer.eDegree.Bachelor || l1.getDegree() == Lecturer.eDegree.Master) {
+                throw new NotQualifiedException(name);
+            }
+            comm1.IsLecturerNotInCommissionTeam(l1);
             comm1.setHeadOfCommission(l1);
-            return true;
-        }
-        else{
-            return false;
-        }
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Commission {
             return;
         }
         if (commissionTeam.length != 0) {
-            for (int i = 0; i < commissionTeam.length; i++) {
+            for (int i = 0; i < numOfCommissionMembers; i++) {
                 if (commissionTeam[i].equals(l1)) {
                     throw new AlreadyExistException(l1.getName());
                 }

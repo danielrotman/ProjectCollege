@@ -104,45 +104,39 @@ public class Main {
 
     private static void addCommission(College theCollege) {
         String commissionName = "", HeadOfCommissionName = "", degreeName, lectId;
+        Lecturer.eDegree degree = null;
         int salary;
         boolean nameOk=false;
         while (!nameOk) {
             try {
                 commissionName = getStringFromUser("Commission name");
-                theCollege.isNameNotExist(commissionName);
-                nameOk = true;
-            } catch (AlreadyExistException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        nameOk=false;
-        while (!nameOk) {
-            try {
+                theCollege.isCommissionExist(commissionName);
                 HeadOfCommissionName = getStringFromUser("Head Of Commission Name");
                 theCollege.isNameNotExist(HeadOfCommissionName);
+                System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
+                degree = Lecturer.eDegree.valueOf(s.nextLine());
+                degreeName = getStringFromUser("degree name");
+                salary = getIntFromUser("Salary");
+                do {
+                    lectId = getStringFromUser("Id");
+                    if (lectId.length() != 9) {
+                        System.out.println("Invalid id try again");
+                    }
+                } while (lectId.length() != 9);
+                Lecturer headOfcommission = new Lecturer(HeadOfCommissionName, lectId, degreeName, salary, degree);
+                theCollege.addLecturer(headOfcommission);
+                Commission commission = new Commission(commissionName, headOfcommission);
+                theCollege.addCommision(commission);
+                System.out.println("commission added successfully");
                 nameOk = true;
-            } catch (AlreadyExistException e) {
+            } catch (AlreadyExistException |NotQualifiedException e) {
                 System.out.println(e.getMessage());
             }
+             catch (Exception e){
+                 System.out.println("General Error");
+             }
         }
-        degreeName = getStringFromUser("degree name");
-        salary = getIntFromUser("Salary");
-        System.out.println("lecturer degree: Bachelor/Master/Phd/Professor");
-        Lecturer.eDegree degree = Lecturer.eDegree.valueOf(s.nextLine());
-        do {
-            lectId = getStringFromUser("Id");
-            if (lectId.length() != 9) {
-                System.out.println("Invalid id try again");
-            }
-        } while (lectId.length() != 9);
-        Lecturer headOfcommission = new Lecturer(HeadOfCommissionName, lectId, degreeName, salary, degree);
-        theCollege.addLecturer(headOfcommission);
-            Commission commission = new Commission(commissionName, headOfcommission);
-            if (theCollege.addCommision(commission)) {
-                System.out.println("commission added successfully");
-            } else {
-                System.out.println("failed adding commission");
-            }
+
     }
 
     private static void addMemberToCommission(College theCollege) {
@@ -167,25 +161,34 @@ public class Main {
 
     private static void updateHeadOfCommission(College theCollege) {
         String commissionName,lectName;
-        commissionName=getStringFromUser("Commission name ");
-        lectName=getStringFromUser("lecturer name");
-        if(theCollege.isPossibleToChangeHeadOfCommission(commissionName,lectName)){
-            System.out.println("Head of commission changed");
-        }
-        else{
-            System.out.println("Update head of commission failed");
-        }
+            try {
+                lectName = getStringFromUser("lecturer name");
+                commissionName = getStringFromUser("Commission name ");
+                theCollege.isPossibleToChangeHeadOfCommission(commissionName, lectName);
+                System.out.println("Head of commission changed");
+            }
+            catch (CommissionNotExistException | LecturerNotExistException |LectruerAlreadyHeadOfCommissionException| NotQualifiedException e){
+                System.out.println(e.getMessage());
+            }
+            catch (CollegeException e){
+                System.out.println("General error");
+            }
+
     }
 
     private static void removeMemberFromCommission(College theCollege) {
         String commissionName,lectName;
-        commissionName=getStringFromUser("Commission name ");
-        lectName=getStringFromUser("lecturer name");
-        if(theCollege.removeMemberFromCommission(commissionName,lectName)){
-            System.out.println("Member removed successfully");
+        try {
+            lectName=getStringFromUser("lecturer name");
+            commissionName=getStringFromUser("Commission name ");
+            theCollege.removeMemberFromCommission(commissionName,lectName);
+                System.out.println("Member removed successfully");
+            }
+         catch (CommissionNotExistException |LecturerNotExistException e) {
+             System.out.println(e.getMessage());
         }
-        else {
-            System.out.println("Removing member failed");
+        catch (CollegeException e){
+            System.out.println("General Error");
         }
     }
 
