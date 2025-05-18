@@ -1,17 +1,15 @@
 package Daniel_Niv;
 
-public class Professor extends Lecturer{
-    int numOfArticles;
-    public Professor(String name, String id, String degreeName, int salary, eDegree degree) {
-        super(name, id, degreeName, salary, degree);
-        setNumOfArticles(numOfArticles);
+public class Professor extends Phd{
+    private String certification;
+    public Professor(String name, String id, String degreeName, int salary, eDegree degree,int numOfArticles,String certification) {
+        super(name, id, degreeName, salary, degree,numOfArticles);
+        this.certification=certification;
+
     }
 
-    public int getNumOfArticles() {
-        return numOfArticles;
+    public String getcertification() {
+        return certification;
     }
 
-    public void setNumOfArticles(int numOfArticles) {
-        this.numOfArticles = numOfArticles;
-    }
 }
