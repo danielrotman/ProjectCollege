@@ -41,7 +41,8 @@ public class College {
         boolean isHere=false;
         for (int i = 0; i < numOfLectrures; i++) {
             if (allLectrures[i].getName().equals((name))) {
-               isHere=true;
+                isHere = true;
+                break;
             }
         }
         if(!isHere){
@@ -86,20 +87,19 @@ public class College {
                 allCommissions[numOfCommissions++]=commission;
             }
 
-    public boolean addDepartment(Department department) {
+    public void addDepartment(Department department) throws CollegeException{
         if (department.getNumOfStudents() < 0) {
-            return false;
+            throw new InvalidNumException();
         } else {
             for (int i = 0; i < numOfDepts; i++) {
                 if (allDepts[i].getDepartmentName().equals(department.getDepartmentName())) {
-                    return false;
+                    throw new AlreadyExistException(department.getDepartmentName());
                 }
             }
             if (allDepts == null || numOfDepts == allDepts.length) {
                 allDepts = (allDepts == null) ? new Department[2] : Arrays.copyOf(allDepts, allDepts.length * 2);
             }
             allDepts[numOfDepts++] = department;
-            return true;
         }
     }
 
@@ -199,39 +199,34 @@ public class College {
                 l1.lecturerCommissionsList(comm1);
     }
 
-    public boolean addMemberToDepartment(String deptName,String name){
+    public void addMemberToDepartment(String deptName,String name) throws CollegeException{
         boolean isDeptExist=false;
         boolean isLectExist=false;
-        boolean isPossibleToAddLect=false;
         Lecturer l1 = null;
         Department dept1 = null;
         for(int i=0;i<numOfLectrures;i++){
             if(allLectrures[i].getName().equals(name)){
                 isLectExist=true;
-
                 l1=allLectrures[i];
             }
+        }
+        if(!isLectExist){
+            throw new LecturerNotExistException(name);
         }
         for(int j=0;j<numOfDepts;j++){
             if(allDepts[j].getDepartmentName().equals(deptName)){
                 isDeptExist=true;
-
                 dept1=allDepts[j];
             }
         }
-
-        if(isDeptExist && isLectExist) {
-            if (l1.getLectDept() == null) {
-                isPossibleToAddLect = true;
-                l1.setLectDept(dept1);
-                return dept1.addToDepartmentTeam(l1);
-            }
+        if(!isDeptExist){
+            throw new DepartmentNotExistException(deptName);
         }
-            return false;
-
-
-
-
+            if (l1.getLectDept() != null) {
+                throw new LecturerAlreadyInDept(name);
+            }
+        l1.setLectDept(dept1);
+        dept1.addToDepartmentTeam(l1);
     }
 
     public void isPossibleToChangeHeadOfCommission(String CommissionName,String name) throws CollegeException{
@@ -274,5 +269,22 @@ public class College {
             sb.append(allCommissions[i].toString()).append("\n");
         }
         return sb.toString();
+    }
+
+    public int compare(String lectName1, String lectName2)throws CollegeException{
+        Lecturer l1=null;
+        Lecturer l2=null;
+        for(int i=0;i<numOfLectrures;i++){
+            if(allLectrures[i].getName().equals(lectName1)){
+                 l1=allLectrures[i];
+            } else if (allLectrures[i].getName().equals(lectName2)) {
+                 l2=allLectrures[i];
+            }
+        }
+            if(l1 instanceof Phd) {
+                int res = ((Phd) l1).compareTo((Phd) (l2));
+                return res;
+            }
+                throw new CannotComapreException();
     }
 }
