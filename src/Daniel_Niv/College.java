@@ -281,7 +281,7 @@ public class College {
                  l2=allLectrures[i];
             }
         }
-            if(l1 instanceof Phd) {
+            if(l1 instanceof Phd && l2 instanceof Phd) {
                 int res = ((Phd) l1).compareTo((Phd) (l2));
                 return res;
             }

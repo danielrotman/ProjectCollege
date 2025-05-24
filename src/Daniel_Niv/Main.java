@@ -1,5 +1,6 @@
 package Daniel_Niv;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 //Daniel Rotman id:324069657, Niv Markovich id:207532680
@@ -47,7 +48,7 @@ public class Main {
                 case 10 -> ShowCommissionsDetails(c1);
                 case 11 -> addLecturerToDepartment(c1);
                 case 12 -> CompareBetweenLecturers(c1);
-                case 13 -> CompareBetweenDepartments(c1);
+                case 13 -> CompareBetweenCommissions(c1);
                 case 14 -> DuplicateCommission(c1);
                 default -> System.out.println("Invalid option choose again!");
             }
@@ -166,6 +167,7 @@ public class Main {
             System.out.println("General error");
         }
     }
+
     private static void removeMemberFromCommission(College theCollege) {
         String commissionName, lectName;
         try {
@@ -183,20 +185,18 @@ public class Main {
     private static void addDepartment(College theCollege) {
         String departmentName;
         int numOfStudents;
-        boolean isok=false;
-        while (!isok) {
             try {
                 departmentName = getStringFromUser("department name");
                 numOfStudents = getIntFromUser("num of students in the department");
                 Department department = new Department(departmentName, numOfStudents);
                 theCollege.addDepartment(department);
-                isok=true;
+                System.out.println("Department added successfully");
+                System.out.println("There are " + theCollege.getNumOfDepts() + " departments");
             } catch (CollegeException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        System.out.println("Department added successfully");
-        System.out.println("There are " + theCollege.getNumOfDepts() + " departments");
+
+
     }
 
     private static void ShowLecturersAvgSalary(College theCollege) {
@@ -223,18 +223,14 @@ public class Main {
 
     private static void addLecturerToDepartment(College c1) {
         String deptName, lectName;
-        boolean valid=false;
-        while (!valid) {
             try {
                 lectName = getStringFromUser("Lecturer name ");
                 deptName = getStringFromUser("Department name ");
                 c1.addMemberToDepartment(deptName, lectName);
-                valid=true;
+                System.out.println("Lecturer added to department successfully! ");
             } catch (CollegeException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        System.out.println("Lecturer added to department successfully! ");
     }
 
     private static int getIntFromUser(String type) {
@@ -294,7 +290,7 @@ public class Main {
                     }
                     case 3 -> {
                         int numOfArticles = getIntFromUser("number of articles ");
-                        String certification = getStringFromUser("enter certification ");
+                        String certification = getStringFromUser(" certification ");
                         lect1 = new Professor(lectName, lectId, degreeName, salary, degree, numOfArticles, certification);
                         System.out.println("Professor added successfully");
                         nameOk = true;
@@ -307,27 +303,42 @@ public class Main {
         }
         return lect1;
     }
+
     private static void CompareBetweenLecturers(College c1) {
      String lectName1 = "",lectName2 = "";
-     int res = 0;
+     int res;
         try {
             lectName1=getStringFromUser("First lecturer name(must be Phd/Professor) ");
             c1.IsNameExist(lectName1);
-            lectName2=getStringFromUser("First lecturer name(must be Phd/Professor) ");
+            lectName2=getStringFromUser("Second lecturer name(must be Phd/Professor) ");
             c1.IsNameExist(lectName2);
             res=c1.compare(lectName1,lectName2);
+            if(res>0){
+                System.out.println(lectName1+" have more articles then: "+lectName2);
+            }
+            else if(res<0){
+                System.out.println(lectName2+" have more articles then: "+lectName1);
+            }
+            else {
+                System.out.println("they have the same amount of articles");
+            }
         } catch (CollegeException e) {
             System.out.println(e.getMessage());
         }
-        if(res>0){
-            System.out.println(lectName1+" is greater than "+lectName2);
-        }
-        else{
-            System.out.println(lectName2+" is greater than "+lectName1);
-        }
+
     }
-    private static void CompareBetweenDepartments(College c1) {
-    }
+
+    private static void CompareBetweenCommissions(College c1)   {
+            System.out.println("Choose by which option:\npress 1: by number of members\npress 2: by numbers of articles");
+            int option = s.nextInt();
+            if (option == 1) {
+                System.out.println("Option 1 selected.");
+            } else if (option == 2) {
+                System.out.println("Option 2 selected.");
+            } else {
+                System.out.println("Invalid option: please choose 1 or 2.");
+            }
+        }
     private static void DuplicateCommission(College c1) {
     }
 }
