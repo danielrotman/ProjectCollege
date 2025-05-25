@@ -329,15 +329,40 @@ public class Main {
     }
 
     private static void CompareBetweenCommissions(College c1)   {
-            System.out.println("Choose by which option:\npress 1: by number of members\npress 2: by numbers of articles");
-            int option = s.nextInt();
+        try {
+            String comm1 = getStringFromUser("Type the name of first Commission");
+            String comm2 = getStringFromUser("Type the name of second Commission");
+            Commission firstCommission=c1.getCommissionByName(comm1);
+            Commission secondCommission=c1.getCommissionByName(comm2);
+            int option=getIntFromUser("Choose by which option:\npress 1: by number of members\npress 2: by numbers of articles");
             if (option == 1) {
-                System.out.println("Option 1 selected.");
+                int res = c1.comparebymembers(firstCommission, secondCommission);
+                if (res > 0) {
+                    System.out.println(comm1+" have more members");
+                } else if (res < 0) {
+                    System.out.println(comm2+ " have more members");
+                } else {
+                    System.out.println("they have the same amount of members! ");
+                }
+
             } else if (option == 2) {
-                System.out.println("Option 2 selected.");
+                int res=c1.comparebyarticles(firstCommission,secondCommission);
+                if (res > 0) {
+                    System.out.println(comm1+" have more articles");
+                } else if (res < 0) {
+                    System.out.println(comm2+ " have more articles");
+                } else {
+                    System.out.println("they have the same amount of articles! ");
+                }
+
             } else {
                 System.out.println("Invalid option: please choose 1 or 2.");
             }
+        }
+        catch(CollegeException e){
+            System.out.println(e.getMessage());
+        }
+           
         }
     private static void DuplicateCommission(College c1) {
     }

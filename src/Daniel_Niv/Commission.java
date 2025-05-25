@@ -38,6 +38,13 @@ public class Commission {
         return commissionName;
     }
 
+    public Lecturer[] getCommissionTeam() {
+        return commissionTeam;
+    }
+
+    public int getNumOfCommissionMembers() {
+        return numOfCommissionMembers;
+    }
     public void setCommissionName(String commissionName) {
         this.commissionName = commissionName;
     }

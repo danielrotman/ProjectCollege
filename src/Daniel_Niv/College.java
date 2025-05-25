@@ -63,13 +63,13 @@ public class College {
         }
     }
 
-    public Lecturer getLecturerByName(String name){
-        for (int i = 0; i < numOfLectrures; i++) {
-            if (allLectrures[i].getName().equals((name))) {
-                return allLectrures[i];
+    public Commission getCommissionByName(String name)throws CollegeException{
+        for (int i = 0; i < numOfCommissions; i++) {
+            if (allCommissions[i].getCommissionName().equals((name))) {
+                return allCommissions[i];
             }
         }
-        return null;
+        throw new CommissionNotExistException(name);
     }
 
     public void addCommision(Commission commission) throws CollegeException{
@@ -260,6 +260,18 @@ public class College {
             }
             comm1.IsLecturerNotInCommissionTeam(l1);
             comm1.setHeadOfCommission(l1);
+    }
+
+    public int comparebymembers(Commission c1,Commission c2){
+        CompareNumOfMembers comparator=new CompareNumOfMembers();
+        int res=comparator.compare(c1,c2);
+        return res;
+    }
+
+    public int comparebyarticles(Commission c1,Commission c2){
+        Comparebyarticles comparator=new Comparebyarticles();
+        int res=comparator.compare(c1,c2);
+        return res;
     }
 
     @Override
