@@ -2,7 +2,7 @@ package Daniel_Niv;
 
 import java.util.Arrays;
 
-public class Lecturer {
+public class Lecturer implements Cloneable {
     private String name;
     private String id;
     public enum eDegree{Bachelor,Master,Phd,Professor};
@@ -91,6 +91,16 @@ public class Lecturer {
         lectCommissions= Arrays.copyOf(lectCommissions,lectCommissions.length*2);
         lectCommissions[numOfLecturerCommissions++]=c1;
     }
+
+    @Override
+    protected Lecturer clone() throws CloneNotSupportedException {
+        Lecturer copy=(Lecturer) super.clone();
+        if(this.lectDept!=null) {
+            copy.lectDept = lectDept.clone();
+        }
+        return copy;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb= new StringBuilder();

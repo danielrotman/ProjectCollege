@@ -2,7 +2,7 @@ package Daniel_Niv;
 
 import java.util.Arrays;
 
-public class Commission {
+public class Commission implements Cloneable{
     private String commissionName;
     private Lecturer[]commissionTeam;
     private int numOfCommissionMembers;
@@ -85,6 +85,19 @@ public class Commission {
             }
         }
 
+    }
+
+    @Override
+    protected Commission clone() throws CloneNotSupportedException {
+        Commission copy=(Commission) super.clone();
+        copy.commissionTeam=new Lecturer[this.commissionTeam.length];
+        for (int i = 0; i < this.commissionTeam.length; i++) {
+            if(this.commissionTeam[i]!=null) {
+                copy.commissionTeam[i] = this.commissionTeam[i].clone();
+            }
+        }
+        copy.headOfCommission=this.headOfCommission.clone();
+        return copy;
     }
 
     @Override

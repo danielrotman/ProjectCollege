@@ -299,4 +299,10 @@ public class College {
             }
                 throw new CannotComapreException();
     }
+
+    public void dupComm(Commission commission) throws CloneNotSupportedException,CollegeException{
+        Commission dup=commission.clone();
+        dup.setCommissionName(dup.getCommissionName()+"-new");
+        addCommision(dup);
+    }
 }

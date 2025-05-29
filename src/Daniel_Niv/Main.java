@@ -325,7 +325,6 @@ public class Main {
         } catch (CollegeException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     private static void CompareBetweenCommissions(College c1)   {
@@ -365,5 +364,16 @@ public class Main {
            
         }
     private static void DuplicateCommission(College c1) {
+        String commName;
+        commName=getStringFromUser("commission name");
+        try {
+           Commission commission=c1.getCommissionByName(commName);
+            c1.dupComm(commission);
+            System.out.println("Commission duplicated successfully");
+        } catch (CollegeException e) {
+            System.out.println(e.getMessage());;
+        } catch (CloneNotSupportedException e) {
+            System.out.println("error");
+        }
     }
 }

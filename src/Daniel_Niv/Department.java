@@ -2,7 +2,7 @@ package Daniel_Niv;
 
 import java.util.Arrays;
 
-public class Department {
+public class Department implements Cloneable {
     private String departmentName;
     private int numOfStudents;
     private Lecturer []deptLectrures;
@@ -52,6 +52,18 @@ public class Department {
 
     }
 }
+
+    @Override
+    protected Department clone() throws CloneNotSupportedException {
+        Department copy= (Department) super.clone();
+        copy.deptLectrures=new Lecturer[this.deptLectrures.length];
+        for (int i = 0; i <this.deptLectrures.length ; i++) {
+            if(this.deptLectrures[i]!=null) {
+                copy.deptLectrures[i] = this.deptLectrures[i].clone();
+            }
+        }
+        return copy;
+    }
 
     public int getNumOfDeptLecturers() {
         return numOfDeptLecturers;
