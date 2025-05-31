@@ -1,4 +1,4 @@
-package Daniel_Niv;
+package Daniel_Niv.Exceptions;
 
 public class LecturerAlreadyInDept extends CollegeException {
     public LecturerAlreadyInDept(String message) {

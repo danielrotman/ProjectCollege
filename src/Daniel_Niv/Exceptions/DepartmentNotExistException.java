@@ -1,4 +1,4 @@
-package Daniel_Niv;
+package Daniel_Niv.Exceptions;
 
 public class DepartmentNotExistException extends CollegeException {
     public DepartmentNotExistException(String message) {

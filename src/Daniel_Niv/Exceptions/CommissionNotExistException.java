@@ -1,4 +1,4 @@
-package Daniel_Niv;
+package Daniel_Niv.Exceptions;
 
 public class CommissionNotExistException extends CollegeException {
     public CommissionNotExistException(String message) {

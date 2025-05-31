@@ -1,5 +1,7 @@
 package Daniel_Niv;
 
+import Daniel_Niv.Exceptions.*;
+
 import java.util.Arrays;
 
 public class College {
@@ -115,7 +117,10 @@ public class College {
         return sb.toString();
     }
 
-    public float getLecturersAvgSalary(){
+    public float getLecturersAvgSalary() throws NoLecturersInCollegeException{
+        if(numOfLectrures==0){
+            throw new NoLecturersInCollegeException();
+        }
         float avg;
         float sum=0;
         for(int i=0;i<numOfLectrures;i++){
@@ -125,12 +130,12 @@ public class College {
         return avg;
     }
 
-    public float getDepartmentLecturersAvgSalary(String deptName) {
+    public float getDepartmentLecturersAvgSalary(String deptName) throws CollegeException{
         for (int i = 0; i < numOfDepts; i++) {
             if (allDepts[i].getDepartmentName().equals(deptName)) {
                 Department dept = allDepts[i];
                 if (dept.getNumOfDeptLecturers() == 0) {
-                    return 0;
+                    throw new NoLecturersInDepartmentException(deptName);
                 }
                 float sum = 0;
                 for (int j = 0; j < numOfLectrures;j++) {
@@ -142,7 +147,7 @@ public class College {
                 return sum/dept.getNumOfDeptLecturers();
             }
         }
-        return 0;
+        throw new DepartmentNotExistException(deptName);
     }
 
     public void removeMemberFromCommission(String commissionNameToCompare, String name)throws CollegeException{

@@ -1,5 +1,7 @@
 package Daniel_Niv;
 
+import Daniel_Niv.Exceptions.AlreadyExistException;
+
 import java.util.Arrays;
 
 public class Commission implements Cloneable{

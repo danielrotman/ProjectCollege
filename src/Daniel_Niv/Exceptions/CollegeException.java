@@ -1,4 +1,4 @@
-package Daniel_Niv;
+package Daniel_Niv.Exceptions;
 
 public class CollegeException extends Exception {
     private static final String PRE_MESSAGE="Error: ";

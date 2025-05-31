@@ -1,6 +1,7 @@
 package Daniel_Niv;
 
-import java.util.InputMismatchException;
+import Daniel_Niv.Exceptions.*;
+
 import java.util.Scanner;
 
 //Daniel Rotman id:324069657, Niv Markovich id:207532680
@@ -200,17 +201,23 @@ public class Main {
     }
 
     private static void ShowLecturersAvgSalary(College theCollege) {
-        System.out.println("The average salary in the college is " + theCollege.getLecturersAvgSalary());
+        try {
+            System.out.println("The average salary in the college is " + theCollege.getLecturersAvgSalary());
+        } catch (NoLecturersInCollegeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void showDepartmentLecturersAvgSalary(College c1) {
-        String deptName;
-        deptName = getStringFromUser("Department name ");
-        float avg = c1.getDepartmentLecturersAvgSalary(deptName);
-        System.out.println(
-                avg == 0 ?
-                        "The department does not exit or There are no lecturers in this department currently." :
-                        "The average salary in the department is " + String.format("%.2f", avg));
+        try {
+            String deptName;
+            float avg;
+            deptName = getStringFromUser("Department name ");
+            avg = c1.getDepartmentLecturersAvgSalary(deptName);
+            System.out.println("The avg salary is "+avg);
+        } catch (CollegeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void ShowAllLecturersDetails(College theCollege) {
@@ -245,7 +252,7 @@ public class Main {
 
     private static Lecturer createLectruer(College theCollege) {
         Lecturer lect1=null;
-        String lectId, lectName = "", degreeName;
+        String lectId, lectName, degreeName;
         boolean nameOk = false;
         Lecturer.eDegree degree = null;
         int salary;
@@ -305,7 +312,7 @@ public class Main {
     }
 
     private static void CompareBetweenLecturers(College c1) {
-     String lectName1 = "",lectName2 = "";
+     String lectName1,lectName2;
      int res;
         try {
             lectName1=getStringFromUser("First lecturer name(must be Phd/Professor) ");
@@ -363,6 +370,7 @@ public class Main {
         }
            
         }
+
     private static void DuplicateCommission(College c1) {
         String commName;
         commName=getStringFromUser("commission name");
@@ -371,7 +379,7 @@ public class Main {
             c1.dupComm(commission);
             System.out.println("Commission duplicated successfully");
         } catch (CollegeException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         } catch (CloneNotSupportedException e) {
             System.out.println("error");
         }
