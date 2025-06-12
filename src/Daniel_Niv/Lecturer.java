@@ -1,6 +1,8 @@
 package Daniel_Niv;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Lecturer implements Cloneable {
     private String name;
@@ -10,8 +12,7 @@ public class Lecturer implements Cloneable {
     private String degreeName;
     private int salary;
     private Department lectDept;
-    private Commission[]lectCommissions;
-    private int numOfLecturerCommissions;
+    private List <Commission> lectCommissions= new ArrayList<>();
 
     public Lecturer(String name, String id, String degreeName, int salary,eDegree degree) {
         setName(name);
@@ -57,13 +58,12 @@ public class Lecturer implements Cloneable {
     }
 
     public void removeLecturerFromCommission(Commission commission){
-        if(numOfLecturerCommissions==0){
+        if(lectCommissions.isEmpty()){
             return;
         }
-        for(int i=0;i<lectCommissions.length;i++){
-            if(lectCommissions[i]==commission){
-                lectCommissions[i]=null;
-                numOfLecturerCommissions--;
+        for(int i=0;i<lectCommissions.size();i++){
+            if(lectCommissions.get(i) ==commission){
+                lectCommissions.set(i, null);
             }
         }
     }
@@ -75,21 +75,7 @@ public class Lecturer implements Cloneable {
         this.lectDept = lectDept;
     }
     public void lecturerCommissionsList(Commission c1){
-     if(numOfLecturerCommissions==0){
-         lectCommissions=new Commission[2];
-         lectCommissions[numOfLecturerCommissions]=c1;
-     }
-     else{
-         for(int i=0;i<lectCommissions.length;i++){
-         if(lectCommissions[i]==null){
-             lectCommissions[i]=c1;
-             numOfLecturerCommissions++;
-             return;
-         }
-         }
-     }
-        lectCommissions= Arrays.copyOf(lectCommissions,lectCommissions.length*2);
-        lectCommissions[numOfLecturerCommissions++]=c1;
+     lectCommissions.add(c1);
     }
 
     @Override
@@ -105,7 +91,7 @@ public class Lecturer implements Cloneable {
     public String toString() {
         StringBuilder sb= new StringBuilder();
         sb.append("Lecturer name: ").append(name).append('\n').append("Commission member in: [");
-        if(numOfLecturerCommissions==0){
+        if(lectCommissions.isEmpty()){
             sb.append("The lecturer is not a member of any commission");
         }
         else{

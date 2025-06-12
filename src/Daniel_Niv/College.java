@@ -2,149 +2,116 @@ package Daniel_Niv;
 
 import Daniel_Niv.Exceptions.*;
 
-import java.util.Arrays;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class College {
-    private Lecturer[] allLectrures;
-    private int numOfLectrures;
-    private Commission[]allCommissions;
-    private int numOfCommissions;
-    private Department[]allDepts;
-    private int numOfDepts;
-    private String collegeName;
+    private List <Lecturer> allLectrures= new ArrayList<>();
+    private List<Commission> allCommissions=new ArrayList<>();
+    private List <Department> allDepts=new ArrayList<>();
+    private final String collegeName;
 
-    public College(int numOfLectrures, int numOfCommissions, int numOfDepts, String collegeName) {
-        this.numOfLectrures = numOfLectrures;
-        this.numOfCommissions = numOfCommissions;
-        this.numOfDepts = numOfDepts;
+    public College( String collegeName) {
         this.collegeName = collegeName;
     }
-
-    public College(String collegeName) {
-        this(0,0,0,collegeName);
-    }
-
-    public void isCommissionExist(String name)throws AlreadyExistException {
-        for (int i = 0; i < numOfCommissions; i++) {
-            if (allCommissions[i].getCommissionName().equals((name))) {
-                throw new AlreadyExistException(name);
+    public boolean containsCommission(String commName) {
+        for (Commission c : allCommissions) {
+            if (c.getCommissionName().equals(commName)) {
+                return true;
             }
         }
+        return false;
+    }
+    public void isCommissionExist(String name)throws AlreadyExistException {
+        if(containsCommission(name)){
+            throw new AlreadyExistException(name);
+        }
+    }
+    public boolean containsLecturer(String lecturerName) {
+        for (Lecturer l : allLectrures) {
+            if (l.getName().equals(lecturerName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void isNameNotExist(String name) throws AlreadyExistException {
-        for (int i = 0; i < numOfLectrures; i++) {
-            if (allLectrures[i].getName().equals((name))) {
-                throw new AlreadyExistException(name);
-            }
+        if(containsLecturer(name)){
+            throw new AlreadyExistException(name);
         }
     }
-    public void IsNameExist(String name) throws CollegeException {
-        boolean isHere=false;
-        for (int i = 0; i < numOfLectrures; i++) {
-            if (allLectrures[i].getName().equals((name))) {
-                isHere = true;
-                break;
-            }
-        }
-        if(!isHere){
+    public void IsNameExist(String name) throws LecturerNotExistException {
+        if(!containsLecturer(name)){
             throw new LecturerNotExistException(name);
+        }
     }
-    }
+        public void add(Lecturer l1){
+        allLectrures.add(l1);
+        }
 
-    public void addLecturer(Lecturer l1)  {
-        if(numOfLectrures==0){
-            allLectrures=new Lecturer[2];
-            allLectrures[numOfLectrures++]=l1;
-        }
-        else {
-            if (numOfLectrures == allLectrures.length) {
-                allLectrures = Arrays.copyOf(allLectrures, allLectrures.length * 2);
-            }
-            allLectrures[numOfLectrures++] = l1;
-        }
-    }
 
     public Commission getCommissionByName(String name)throws CollegeException{
-        for (int i = 0; i < numOfCommissions; i++) {
-            if (allCommissions[i].getCommissionName().equals((name))) {
-                return allCommissions[i];
+        for (int i = 0; i < allCommissions.size(); i++) {
+            if (allCommissions.get(i).getCommissionName().equals((name))) {
+                return allCommissions.get(i);
             }
         }
         throw new CommissionNotExistException(name);
     }
 
-    public void addCommision(Commission commission) throws CollegeException{
-        if (commission.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || commission.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master) {
-            throw new NotQualifiedException(commission.getHeadOfCommission().getName());
+    public void addCommission(Commission c1) throws CollegeException{
+        if (c1.getHeadOfCommission().getDegree()== Lecturer.eDegree.Bachelor || c1.getHeadOfCommission().getDegree()==Lecturer.eDegree.Master) {
+            throw new NotQualifiedException(c1.getHeadOfCommission().getName());
         }
-            for(int i=0;i<numOfCommissions;i++) {
-                if (allCommissions[i].getCommissionName().equals(commission.getCommissionName())) {
-                    throw new AlreadyExistException(commission.getCommissionName());
-                }
-            }
-                if(allCommissions==null || numOfCommissions==allCommissions.length){
-                    allCommissions=(allCommissions==null)?new Commission[2]:Arrays.copyOf(allCommissions,allCommissions.length*2);
-                }
-                allCommissions[numOfCommissions++]=commission;
-            }
+        if(containsCommission(c1.getCommissionName())){
+            throw new AlreadyExistException(c1.getCommissionName());
+        }
+        allCommissions.add(c1);
+    }
 
     public void addDepartment(Department department) throws CollegeException{
-        if (department.getNumOfStudents() < 0) {
-            throw new InvalidNumException();
-        } else {
-            for (int i = 0; i < numOfDepts; i++) {
-                if (allDepts[i].getDepartmentName().equals(department.getDepartmentName())) {
-                    throw new AlreadyExistException(department.getDepartmentName());
-                }
-            }
-            if (allDepts == null || numOfDepts == allDepts.length) {
-                allDepts = (allDepts == null) ? new Department[2] : Arrays.copyOf(allDepts, allDepts.length * 2);
-            }
-            allDepts[numOfDepts++] = department;
-        }
+       allDepts.add(department);
     }
 
-    public int getNumOfDepts() {
-        return numOfDepts;
-    }
 
     public String getAllLecturersDetails() {
         StringBuilder sb = new StringBuilder("Lecturers:\n");
-        for (int i = 0; i < numOfLectrures; i++) {
-            sb.append(allLectrures[i].toString()).append("\n");
+        for (int i = 0; i < allLectrures.size(); i++) {
+            sb.append(allLectrures.get(i).toString()).append("\n");
         }
         return sb.toString();
     }
 
     public float getLecturersAvgSalary() throws NoLecturersInCollegeException{
-        if(numOfLectrures==0){
+        if(allLectrures.isEmpty()){
             throw new NoLecturersInCollegeException();
         }
         float avg;
         float sum=0;
-        for(int i=0;i<numOfLectrures;i++){
-            sum=sum+allLectrures[i].getSalary();
+        for(int i=0;i<allLectrures.size();i++){
+            sum=sum+ allLectrures.get(i).getSalary();
         }
-        avg=sum/numOfLectrures;
+        avg=sum/allLectrures.size();
         return avg;
     }
 
     public float getDepartmentLecturersAvgSalary(String deptName) throws CollegeException{
-        for (int i = 0; i < numOfDepts; i++) {
-            if (allDepts[i].getDepartmentName().equals(deptName)) {
-                Department dept = allDepts[i];
+        for (Department allDept : allDepts) {
+            if (allDept.getDepartmentName().equals(deptName)) {
+                Department dept = allDept;
                 if (dept.getNumOfDeptLecturers() == 0) {
                     throw new NoLecturersInDepartmentException(deptName);
                 }
                 float sum = 0;
-                for (int j = 0; j < numOfLectrures;j++) {
+                for (Lecturer allLectrure : allLectrures) {
 
-                    if(allLectrures[j]!=null&&allLectrures[j].getLectDept().getDepartmentName().equals(deptName)) {
-                        sum = sum + allLectrures[j].getSalary();
+                    if (allLectrure != null && allLectrure.getLectDept().getDepartmentName().equals(deptName)) {
+                        sum = sum + allLectrure.getSalary();
                     }
                 }
-                return sum/dept.getNumOfDeptLecturers();
+                return sum / dept.getNumOfDeptLecturers();
             }
         }
         throw new DepartmentNotExistException(deptName);
@@ -155,25 +122,25 @@ public class College {
         boolean isLectExist=false;
         Lecturer l1 = null;
         Commission comm1 = null;
-        for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getName().equals(name)){
+        for(int i=0;i<allLectrures.size();i++){
+            if(allLectrures.get(i).getName().equals(name)){
                 isLectExist=true;
-                l1=allLectrures[i];
+                l1= allLectrures.get(i);
             }
         }
         if(!isLectExist){
             throw new LecturerNotExistException(name);
         }
-        for(int j=0;j<numOfCommissions;j++){
-            if(allCommissions[j].getCommissionName().equals(commissionNameToCompare)){
+        for(int j=0;j<allCommissions.size();j++){
+            if(allCommissions.get(j).getCommissionName().equals(commissionNameToCompare)){
                 isCommExist=true;
-                comm1=allCommissions[j];
+                comm1= allCommissions.get(j);
             }
         }
         if(!isCommExist) {
             throw new CommissionNotExistException(commissionNameToCompare);
         }
-            comm1.removeLectFromCommission(l1);
+            comm1.remove(l1);
             l1.removeLecturerFromCommission(comm1);
     }
 
@@ -181,17 +148,17 @@ public class College {
         boolean isCommExist=false;
         Lecturer l1 = null;
         Commission comm1 = null;
-        for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getName().equals(name)){
-                l1=allLectrures[i];
+        for (Lecturer allLectrure : allLectrures) {
+            if (allLectrure.getName().equals(name)) {
+                l1 = allLectrure;
             }
         }
 
-        for(int j=0;j<numOfCommissions;j++){
-            if(allCommissions[j].getCommissionName().equals(commissionNameToCompare)){
-                isCommExist=true;
-                comm1=allCommissions[j];
-                if (comm1.getHeadOfCommission().getName().equals(name)){
+        for (Commission allCommission : allCommissions) {
+            if (allCommission.getCommissionName().equals(commissionNameToCompare)) {
+                isCommExist = true;
+                comm1 = allCommission;
+                if (comm1.getHeadOfCommission().getName().equals(name)) {
                     throw new LectruerAlreadyHeadOfCommissionException(name);
                 }
             }
@@ -200,7 +167,7 @@ public class College {
             throw new CommissionNotExistException(commissionNameToCompare);
         }
             comm1.IsLecturerNotInCommissionTeam(l1);
-                comm1.addToCommissionTeam(l1);
+                comm1.add(l1);
                 l1.lecturerCommissionsList(comm1);
     }
 
@@ -209,19 +176,19 @@ public class College {
         boolean isLectExist=false;
         Lecturer l1 = null;
         Department dept1 = null;
-        for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getName().equals(name)){
+        for(int i=0;i<allLectrures.size();i++){
+            if(allLectrures.get(i).getName().equals(name)){
                 isLectExist=true;
-                l1=allLectrures[i];
+                l1= allLectrures.get(i);
             }
         }
         if(!isLectExist){
             throw new LecturerNotExistException(name);
         }
-        for(int j=0;j<numOfDepts;j++){
-            if(allDepts[j].getDepartmentName().equals(deptName)){
-                isDeptExist=true;
-                dept1=allDepts[j];
+        for (Department allDept : allDepts) {
+            if (allDept.getDepartmentName().equals(deptName)) {
+                isDeptExist = true;
+                dept1 = allDept;
             }
         }
         if(!isDeptExist){
@@ -239,19 +206,19 @@ public class College {
         boolean isLectExist=false;
         Lecturer l1 = null;
         Commission comm1 = null;
-        for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getName().equals(name)){
+        for(int i=0;i<allLectrures.size();i++){
+            if(allLectrures.get(i).getName().equals(name)){
                 isLectExist=true;
-                l1=allLectrures[i];
+                l1= allLectrures.get(i);
             }
         }
         if (!isLectExist){
             throw new LecturerNotExistException(name);
         }
-        for(int j=0;j<numOfCommissions;j++){
-            if(allCommissions[j].getCommissionName().equals(CommissionName)){
+        for(int j=0;j<allCommissions.size();j++){
+            if(allCommissions.get(j).getCommissionName().equals(CommissionName)){
                 isCommExist=true;
-                comm1=allCommissions[j];
+                comm1=allCommissions.get(j);
                 if (comm1.getHeadOfCommission().getName().equals(name)){
                     throw new LectruerAlreadyHeadOfCommissionException(name);
                 }
@@ -281,9 +248,9 @@ public class College {
 
     @Override
     public String toString() {
-        StringBuilder sb= new StringBuilder("College "+collegeName+" has "+numOfCommissions+" commission's: ");
-        for(int i=0;i<numOfCommissions;i++){
-            sb.append(allCommissions[i].toString()).append("\n");
+        StringBuilder sb= new StringBuilder("College "+collegeName+" has "+allCommissions.size()+" commission's: ");
+        for(int i=0;i<allCommissions.size();i++){
+            sb.append(allCommissions.get(i).toString()).append("\n");
         }
         return sb.toString();
     }
@@ -291,11 +258,11 @@ public class College {
     public int compare(String lectName1, String lectName2)throws CollegeException{
         Lecturer l1=null;
         Lecturer l2=null;
-        for(int i=0;i<numOfLectrures;i++){
-            if(allLectrures[i].getName().equals(lectName1)){
-                 l1=allLectrures[i];
-            } else if (allLectrures[i].getName().equals(lectName2)) {
-                 l2=allLectrures[i];
+        for(int i=0;i<allLectrures.size();i++){
+            if(allLectrures.get(i).getName().equals(lectName1)){
+                 l1= allLectrures.get(i);
+            } else if (allLectrures.get(i).getName().equals(lectName2)) {
+                 l2= allLectrures.get(i);
             }
         }
             if(l1 instanceof Phd && l2 instanceof Phd) {
@@ -308,6 +275,6 @@ public class College {
     public void dupComm(Commission commission) throws CloneNotSupportedException,CollegeException{
         Commission dup=commission.clone();
         dup.setCommissionName(dup.getCommissionName()+"-new");
-        addCommision(dup);
+        addCommission(dup);
     }
 }

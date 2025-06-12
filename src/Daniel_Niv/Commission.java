@@ -1,31 +1,42 @@
 package Daniel_Niv;
 
 import Daniel_Niv.Exceptions.AlreadyExistException;
+import Daniel_Niv.Exceptions.CollegeException;
+import Daniel_Niv.Exceptions.IlegalMemberAddedException;
 
-import java.util.Arrays;
 
-public class Commission implements Cloneable{
+import java.util.ArrayList;
+
+
+public class Commission <T extends Lecturer>  implements Cloneable{
     private String commissionName;
-    private Lecturer[]commissionTeam;
-    private int numOfCommissionMembers;
     private Lecturer headOfCommission;
+    private ArrayList <T> commissionTeam=new ArrayList<>();
+    private Class<?> allowedType = null;
+
 
 
     public Commission(String commisonName,Lecturer headOfCommision){
         setCommissionName(commisonName);
         setHeadOfCommission(headOfCommision);
     }
-
+    public void add(T lecturer)throws CollegeException {
+        if (allowedType == null) {
+            allowedType = lecturer.getClass();
+        } else if (!lecturer.getClass().equals(allowedType)) {
+            throw new IlegalMemberAddedException(lecturer.getName());
+        }
+        commissionTeam.add(lecturer);
+    }
+    public void remove(T lecturer){
+        commissionTeam.remove(lecturer);
+    }
     public void IsLecturerNotInCommissionTeam(Lecturer l1) throws AlreadyExistException {
-        if(commissionTeam==null){
+        if(commissionTeam.isEmpty()){
             return;
         }
-        if (commissionTeam.length != 0) {
-            for (int i = 0; i < numOfCommissionMembers; i++) {
-                if (commissionTeam[i].equals(l1)) {
-                    throw new AlreadyExistException(l1.getName());
-                }
-            }
+        if(commissionTeam.contains(l1)){
+            throw new AlreadyExistException(l1.getName());
         }
     }
     public Lecturer getHeadOfCommission() {
@@ -40,65 +51,27 @@ public class Commission implements Cloneable{
         return commissionName;
     }
 
-    public Lecturer[] getCommissionTeam() {
+    public ArrayList<T> getCommissionTeam() {
         return commissionTeam;
     }
 
     public int getNumOfCommissionMembers() {
-        return numOfCommissionMembers;
+        return commissionTeam.size();
     }
     public void setCommissionName(String commissionName) {
         this.commissionName = commissionName;
     }
 
-    public void addToCommissionTeam(Lecturer l1){
-    if(numOfCommissionMembers==0){
-        commissionTeam=new Lecturer[2];
-        commissionTeam[numOfCommissionMembers++]=l1;
-    }
-    else {
-        for(int i=0;i<commissionTeam.length;i++) {
-            if (commissionTeam[i] == null) {
-                commissionTeam[i] = l1;
-                numOfCommissionMembers++;
-                return;
-            }
-        }
-        commissionTeam = Arrays.copyOf(commissionTeam, commissionTeam.length * 2);
-        commissionTeam[numOfCommissionMembers++] = l1;
-
-    }
-    }
-
-    public void removeLectFromCommission(Lecturer l1){
-        if(numOfCommissionMembers==0){
-            System.out.println("there is no Lecturers in this commission");
-            return;
-        }
-        else{
-            for(int i=0;i<commissionTeam.length;i++){
-                if(commissionTeam[i]!=null){
-                if(l1.getId().equals(commissionTeam[i].getId())) {
-
-                    commissionTeam[i] = null;
-                    numOfCommissionMembers--;
-                }
-                }
-            }
-        }
-
-    }
-
     @Override
-    protected Commission clone() throws CloneNotSupportedException {
-        Commission copy=(Commission) super.clone();
-        copy.commissionTeam=new Lecturer[this.commissionTeam.length];
-        for (int i = 0; i < this.commissionTeam.length; i++) {
-            if(this.commissionTeam[i]!=null) {
-                copy.commissionTeam[i] = this.commissionTeam[i].clone();
-            }
+    public Commission clone() throws CloneNotSupportedException {
+        Commission copy = (Commission) super.clone();
+        copy.commissionTeam = new ArrayList<>();
+        for (Lecturer l : this.commissionTeam) {
+            copy.commissionTeam.add(l.clone());
         }
-        copy.headOfCommission=this.headOfCommission.clone();
+
+        copy.headOfCommission = this.headOfCommission.clone();
+
         return copy;
     }
 
@@ -107,7 +80,7 @@ public class Commission implements Cloneable{
         StringBuilder sb = new StringBuilder();
         sb.append("commission Name='").append(commissionName).append('\'')
                 .append(", commission Team=[");
-        if(numOfCommissionMembers==0){
+        if(commissionTeam.isEmpty()){
             sb.append("the commission is empty!");
 
         }

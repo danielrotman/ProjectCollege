@@ -1,12 +1,12 @@
 package Daniel_Niv;
+import java.util.List;
+import java.util.ArrayList;
 
-import java.util.Arrays;
 
 public class Department implements Cloneable {
     private String departmentName;
     private int numOfStudents;
-    private Lecturer []deptLectrures;
-    private int numOfDeptLecturers;
+    private List <Lecturer>deptLectrures=new ArrayList<>();
 
 
     public Department(String departmentName, int numOfStudents) {
@@ -31,41 +31,33 @@ public class Department implements Cloneable {
     }
 
     public boolean addToDepartmentTeam(Lecturer l1){
-            if(numOfDeptLecturers==0){
-        deptLectrures=new Lecturer[2];
-        deptLectrures[numOfDeptLecturers++]=l1;
-        return true;
-    }
-    else {
-        for(int i=0;i<deptLectrures.length;i++) {
-            if(deptLectrures[i]!=null&&deptLectrures[i]==l1){
+        for(int i=0;i<deptLectrures.size();i++) {
+            if(deptLectrures.get(i) !=null&& deptLectrures.get(i) ==l1){
                 return false;
             }
-            if (deptLectrures[i] == null) {
-                deptLectrures[i] = l1;
-                numOfDeptLecturers++;
+            if (deptLectrures.get(i) == null) {
+                deptLectrures.set(i, l1);
             }
         }
-        deptLectrures = Arrays.copyOf(deptLectrures, deptLectrures.length * 2);
-        deptLectrures[numOfDeptLecturers++] = l1;
         return true;
 
-    }
+
 }
 
     @Override
-    protected Department clone() throws CloneNotSupportedException {
-        Department copy= (Department) super.clone();
-        copy.deptLectrures=new Lecturer[this.deptLectrures.length];
-        for (int i = 0; i <this.deptLectrures.length ; i++) {
-            if(this.deptLectrures[i]!=null) {
-                copy.deptLectrures[i] = this.deptLectrures[i].clone();
-            }
+    public Department clone() throws CloneNotSupportedException {
+        Department copy = (Department) super.clone();
+
+        // שכפול עמוק של רשימת המרצים
+        copy.deptLectrures = new ArrayList<>();
+        for (Lecturer l : this.deptLectrures) {
+            copy.deptLectrures.add(l.clone());
         }
+
         return copy;
     }
 
     public int getNumOfDeptLecturers() {
-        return numOfDeptLecturers;
+        return deptLectrures.size();
     }
 }

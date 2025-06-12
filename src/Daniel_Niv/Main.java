@@ -68,7 +68,7 @@ public class Main {
     }
 
     private static void addLecturer(College theCollege) {
-        theCollege.addLecturer(createLectruer(theCollege));
+        theCollege.add(createLectruer(theCollege));
     }
 
     private static void addCommission(College theCollege) {
@@ -121,9 +121,9 @@ public class Main {
                         nameOk = true;
                     }
                 }
-                theCollege.addLecturer(lect1);
-                Commission commission = new Commission(commissionName, lect1);
-                theCollege.addCommision(commission);
+                theCollege.add(lect1);
+                Commission commission = new Commission(commissionName ,lect1);
+                theCollege.addCommission(commission);
                 System.out.println("commission added successfully");
                 nameOk = true;
             } catch (AlreadyExistException | NotQualifiedException e) {
@@ -136,22 +136,19 @@ public class Main {
 
     private static void addMemberToCommission(College theCollege) {
         String commissionName, lectName;
-        boolean nameOk = false;
-        while (!nameOk) {
             try {
                 commissionName = getStringFromUser("Commission name");
                 lectName = getStringFromUser("name");
                 theCollege.IsNameExist(lectName);
                 theCollege.addMemberToCommissionTeam(commissionName, lectName);
-                nameOk = true;
                 System.out.println("Lecturer added successfully");
             } catch (CommissionNotExistException | LecturerNotExistException |
-                     LectruerAlreadyHeadOfCommissionException e) {
+                     LectruerAlreadyHeadOfCommissionException |IlegalMemberAddedException e) {
                 System.out.println(e.getMessage());
             } catch (CollegeException e) {
-                System.out.println("General error: Lecturer already in commission");
+                System.out.println("General error ");
             }
-        }
+
     }
 
     private static void updateHeadOfCommission(College theCollege) {
@@ -192,7 +189,6 @@ public class Main {
                 Department department = new Department(departmentName, numOfStudents);
                 theCollege.addDepartment(department);
                 System.out.println("Department added successfully");
-                System.out.println("There are " + theCollege.getNumOfDepts() + " departments");
             } catch (CollegeException e) {
                 System.out.println(e.getMessage());
             }
