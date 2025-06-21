@@ -2,6 +2,7 @@ package Daniel_Niv;
 
 import Daniel_Niv.Exceptions.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 //Daniel Rotman id:324069657, Niv Markovich id:207532680
@@ -29,10 +30,21 @@ public class Main {
     public static void main(String[] args) {
         int userOption;
         s = new Scanner(System.in);
-        String theCollege;
-        System.out.println("Enter college name: ");
-        theCollege = s.nextLine();
-        College c1 = new College(theCollege);
+        final String FILE_NAME = "college_data.bin";
+        College c1 ;
+        try {
+            c1 = College.loadFromFile(FILE_NAME);
+            if (c1 == null) {
+                System.out.println("Enter college name: ");
+                String theCollege = s.nextLine();
+                c1 = new College(theCollege);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(" Starting fresh file.");
+            System.out.print("Enter college name: ");
+            String theCollege = s.nextLine();
+            c1 = new College(theCollege);
+        }
         do {
             userOption = Showmenu();
             switch (userOption) {
@@ -55,9 +67,13 @@ public class Main {
             }
         }
         while (userOption != 0);
+        try {
+            c1.saveToFile(FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("Error saving data: " + e.getMessage());
+        }
         s.close();
     }
-
     private static int Showmenu() {
         System.out.println("\n====== Menu =======");
         for (int i = 0; i < MENU.length; i++) {

@@ -1,13 +1,13 @@
 package Daniel_Niv;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Lecturer implements Cloneable {
+public class Lecturer implements Cloneable, Serializable {
     private String name;
     private String id;
-    public enum eDegree{Bachelor,Master,Phd,Professor};
+    public enum eDegree{Bachelor,Master,Phd,Professor}
     private eDegree degree;
     private String degreeName;
     private int salary;
@@ -27,10 +27,6 @@ public class Lecturer implements Cloneable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {

@@ -1,9 +1,10 @@
 package Daniel_Niv;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 
-public class Department implements Cloneable {
+public class Department implements Cloneable, Serializable {
     private String departmentName;
     private int numOfStudents;
     private List <Lecturer>deptLectrures=new ArrayList<>();
@@ -12,10 +13,6 @@ public class Department implements Cloneable {
     public Department(String departmentName, int numOfStudents) {
         setDepartmentName(departmentName);
         setNumOfStudents(numOfStudents);
-    }
-
-    public int getNumOfStudents() {
-        return numOfStudents;
     }
 
     public void setNumOfStudents(int numOfStudents) {
@@ -40,8 +37,6 @@ public class Department implements Cloneable {
             }
         }
         return true;
-
-
 }
 
     @Override

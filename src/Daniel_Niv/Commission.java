@@ -5,10 +5,11 @@ import Daniel_Niv.Exceptions.CollegeException;
 import Daniel_Niv.Exceptions.IlegalMemberAddedException;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Commission <T extends Lecturer>  implements Cloneable{
+public class Commission <T extends Lecturer>  implements Cloneable, Serializable {
     private String commissionName;
     private Lecturer headOfCommission;
     private ArrayList <T> commissionTeam=new ArrayList<>();
